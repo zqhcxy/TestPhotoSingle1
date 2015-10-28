@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TestPhoto</string>
+    <string name="title_activity_show_photo">ShowPhotoActivity</string>
+    <string name="title_activity_album_photo">AlbumActivity</string>
+    <string name="title_activity_gallery_pthoto">GalleryActivity</string>
+    <string name="title_activity_showvideo_video">ShowVideoActivity</string>
+    <string name="title_activity_share_video"> ShareActivity</string>
+    <string name="title_activity_full_edit">FullEditActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="select_album">选择相册</string>
+    <string name="select_image">选择图片</string>
+    <string name="select_video">选择视频</string>
+    <string name="select_audio">选择音频</string>
+    <string name="main_confirm">确定</string>
+    <string name="main_cancel">取消</string>
+    <string name="main_back">返回</string>
+    <string name="album_all">全部</string>
+    <string name="album_file">文件夹</string>
+    <string name="photo_album">图库</string>
+    <string name="cut_photo">截图</string>
+
+    <string name="loacl_audio">音频</string>
+    <string name="loacl_photo">图片</string>
+    <string name="loacl_video">视频</string>
+    <string name="photo_original">原图</string>
+    <string name="system_audio">系统铃声</string>
+
+    <string name="photo_corder">拍摄照片</string>
+    <string name="video_corder">拍摄视频</string>
+    <string name="audio_corder">录制音频</string>
+    <string name="main_msg">信息</string>
+    <string name="msg_limit">还可以输入140个字</string>
+
+
+</resources>

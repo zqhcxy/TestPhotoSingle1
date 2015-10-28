@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 顶部标题栏 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_comm_topbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/top_ly"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/topbar_height"
+        android:background="@color/top_color">
+        <!--<Button-->
+        <!--android:id="@+id/topbar_left_btn"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:background="@drawable/selector_back_arrow"-->
+        <!--android:drawableLeft="@drawable/ic_meida_back"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:paddingLeft="16dp"-->
+        <!--android:textColor="@drawable/xml_back_textcolor"-->
+        <!--android:textSize="@dimen/topbar_right_textSize"-->
+        <!--android:visibility="gone" />-->
+
+        <ImageView
+            android:id="@+id/topbar_left_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_back_arrow"
+            android:paddingLeft="16dp"
+            android:paddingRight="24dp"
+            android:scaleType="center"
+            android:src="@drawable/nav_return"
+            android:visibility="invisible" />
+
+
+        <TextView
+            android:id="@+id/topbar_title_tv"
+            style="@style/topbarTittleTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="72dp"
+            android:ellipsize="end"
+            android:maxLength="16"
+            android:textColor="@color/white"
+            android:textSize="@dimen/topbar_textSize" />
+
+        <Button
+            android:id="@+id/topbar_right_btn"
+            android:layout_width="56dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/selector_confirm_tv"
+            android:textColor="@drawable/xml_back_textcolor"
+            android:textSize="@dimen/middle_space"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/topbar_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@+id/top_ly"
+        android:background="@drawable/buttom_shadow"
+        android:orientation="horizontal"
+        android:visibility="gone" />
+</RelativeLayout>

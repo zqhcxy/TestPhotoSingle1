@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- <include layout="@layout/comm_topbar_ll" /> -->
+
+    <!-- <ListView -->
+    <!-- android:id="@+id/select_img_listView" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:divider="@color/gray_bg" -->
+    <!-- android:dividerHeight="1dp" -->
+    <!-- android:fadingEdge="none" -->
+    <!-- android:listSelector="@android:color/transparent" -->
+    <!-- android:scrollbars="none" -->
+    <!-- android:scrollingCache="false" /> -->
+
+
+    <GridView
+        android:id="@+id/select_img_gv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:horizontalSpacing="2dp"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="3"
+        android:scrollingCache="false"
+        android:verticalSpacing="2dp" >
+    </GridView>
+
+</LinearLayout>

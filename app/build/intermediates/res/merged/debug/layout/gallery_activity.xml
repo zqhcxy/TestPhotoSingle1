@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.example.testphoto.views.MyGalleryPageView
+        android:id="@+id/preview_vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:background="@color/plugin_camera_black"
+        android:unselectedAlpha="1" />
+
+    <include layout="@layout/comm_topbar_ll" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/photo_button_ly">
+
+        <CheckBox
+            android:id="@+id/gy_compression_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:button="@null"
+            android:drawableLeft="@drawable/selector_checkbox1"
+            android:paddingLeft="16dp"
+            android:paddingRight="10dp" />
+
+        <TextView
+            android:id="@+id/gy_pic_size"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/gy_compression_cb"
+            android:gravity="center"
+            android:text="@string/photo_original"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+
+        <ImageView
+            android:id="@+id/gallery_rotation"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/selector_back_arrow"
+            android:layout_toLeftOf="@+id/gallery_shear"
+            android:scaleType="center"
+            android:src="@drawable/but_media_rotate" />
+
+        <ImageView
+            android:id="@+id/gallery_shear"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_back_arrow"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="center"
+            android:src="@drawable/but_media_cut" />
+    </RelativeLayout>
+
+</RelativeLayout><!-- From: file:/D:/EcliProj2/TestPhotoSingle1/app/src/main/res/layout/gallery_activity.xml -->

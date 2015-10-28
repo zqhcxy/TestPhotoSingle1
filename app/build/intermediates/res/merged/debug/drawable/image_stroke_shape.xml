@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <stroke
+        android:color="@color/gray3_bg"
+        android:width="1dp"></stroke>
+</shape><!-- From: file:/D:/EcliProj2/TestPhotoSingle1/app/src/main/res/drawable/image_stroke_shape.xml -->

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="gray_bg">#cccccc</color>
+    <color name="gray_dark_bg">#666666</color>
+    <color name="black">#000000</color>
+
+    <!-- 多媒体文件选择模块的头部颜色颜色 -->
+    <color name="top_color">#252d3c</color>
+    <color name="image_checked_bg">#66000000</color>
+    <color name="back_checked_bg">#0968c9</color>
+
+    <!-- 菜单栏 按钮文字颜色 -->
+    <color name="topbar_btn_text_color">#ffffff</color>
+
+    <!-- 返回按钮 字体颜色 -->
+    <color name="back_color_noclick">#ffff</color>
+    <color name="back_color_click">#8fff</color>
+    <color name="plugin_camera_black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="light_gray">#dddddd</color>
+    <color name="drawer_right_logout_hint_text_bg">#ff2bb2cf</color>
+    <color name="drawer_right_logout_hint_text_night">#ff77828f</color>
+    <color name="world">#252525</color>
+    <color name="transparent">#e0000000</color>
+
+    <color name="abc_color">#55ffffff</color>
+    <color name="cutpho_bg">#a0000000</color>
+
+
+    <color name="gray1_bg">#f2f2f2</color>
+    <color name="gray2_bg">#dfdfdf</color>
+    <color name="gray3_bg">#c8c8c8</color>
+    <color name="gray4_bg">#c0bfbf</color>
+    <color name="gray5_bg">#f2f0f0</color>
+    <color name="gray6_bg">#ededed</color>
+    <color name="msg_edit_stroke">#c1c1c3</color>
+
+
+
+
+    <color name="blue1_bg">#0b94f9</color>
+    <color name="blue2_bg">#aeddff</color>
+
+    <!--分割线的颜色1-->
+    <color name="line1">#d2d2d2</color>
+
+    <!-- 编写发送消息字数颜色 -->
+    <color name="msglimit">#929292</color>
+    <!--图片选择底部的菜单栏颜色-->
+    <color name="photo_button_ly">#f2252d3c</color>
+    <!--多媒体模块头部确定颜色-->
+    <color name="media_confirm">#0b94f9</color>
+
+    <!--多媒体模块背景颜色-->
+    <color name="media_bg">#070b13</color>
+    <!--多媒体模块系统相机字体颜色-->
+    <color name="media_bg1">#ececec</color>
+    <color name="media_bg2">#fafafa</color>
+
+    <color name="media_bg3">#e3e9ee</color>
+
+
+    <!--多媒体模块分组标题未选中背景颜色-->
+    <color name="media_grouptit_bg">#aaacb0</color>
+    <!--多媒体模块系统相机背景颜色-->
+    <color name="media_sysphoto_bg">#323845</color>
+    <!--多媒体模块系统相机字体颜色-->
+    <color name="media_sysphotoworld_bg">#d0d1d3</color>
+    <!--多媒体模块音频标题字体颜色-->
+    <color name="media_audio_txt">#545454</color>
+    <!--多媒体模块音频文件夹列表字体颜色-->
+    <color name="media_audio_floder">#404040</color>
+    <!--多媒体模块音频文件夹列表文件总数字体颜色-->
+    <color name="media_audio_floder_count">#989898</color>
+
+    <!--头部标题底部阴影渐变颜色-->
+    <color name="top_shadow_star">#3f000000</color>
+    <color name="top_shadow_end">#00000000</color>
+
+
+    <!--全屏编辑，编辑框内容颜色-->
+    <color name="fulledit_edit">#acacac</color>
+    <!--全屏编辑，编辑框背景颜色-->
+    <color name="fulledit_bg">#f7f7f7</color>
+    <!--选中的多媒体文件名字颜色-->
+    <color name="mediashow_world">#404040</color>
+
+
+</resources>

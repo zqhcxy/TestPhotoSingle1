@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="D:\Android_studio\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="D:\EcliProj2\TestPhotoSingle1\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-52ba904f290543e35856d108a85a4f70fce5505f.jar" />
+    </item>
+    <item
+        jar="C:\Users\zqh-pc\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\glide\3.6.1\86b122e640af09b0723e1fa44083c354ba6d9089\glide-3.6.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="86b122e640af09b0723e1fa44083c354ba6d9089">
+        <dex dex="D:\EcliProj2\TestPhotoSingle1\app\build\intermediates\pre-dexed\debug\glide-3.6.1-ca6ee65179412df2e3c7a9a5a2887538f0611163.jar" />
+    </item>
+    <item
+        jar="D:\EcliProj2\TestPhotoSingle1\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="39ae02ce40c3ac828abbf780ce0ff5d7a28b7d6a">
+        <dex dex="D:\EcliProj2\TestPhotoSingle1\app\build\intermediates\pre-dexed\debug\classes-b5b4f1a89984fcd106f39d80006d57285bd9cc06.jar" />
+    </item>
+    <item
+        jar="D:\EcliProj2\TestPhotoSingle1\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="D:\EcliProj2\TestPhotoSingle1\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-fb1134f46c3d4b47ff5efee0ba187b45b3488a03.jar" />
+    </item>
+    <item
+        jar="D:\EcliProj2\TestPhotoSingle1\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="D:\EcliProj2\TestPhotoSingle1\app\build\intermediates\pre-dexed\debug\classes-ac44a75d49ec990ec1d9aadfd9f96cdade4aab4c.jar" />
+    </item>
+
+</items>

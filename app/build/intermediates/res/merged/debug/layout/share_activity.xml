@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <com.example.testphoto.views.CropImageView1
+        android:id="@+id/share_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/world"
+        android:src="@drawable/ic_launcher" />
+
+    <include layout="@layout/comm_topbar_ll" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@color/photo_button_ly">
+
+        <ImageView
+            android:id="@+id/share_reverse_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="14dp"
+            android:layout_toLeftOf="@+id/share_rotation_iv"
+            android:src="@drawable/but_media_flip" />
+
+        <ImageView
+            android:id="@+id/share_rotation_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_back_arrow"
+            android:scaleType="center"
+            android:src="@drawable/but_media_rotate" />
+
+
+    </LinearLayout>
+
+</RelativeLayout><!-- From: file:/D:/EcliProj2/TestPhotoSingle1/app/src/main/res/layout/share_activity.xml -->

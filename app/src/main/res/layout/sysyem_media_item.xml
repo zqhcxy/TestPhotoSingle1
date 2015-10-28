@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/sys_meida_ly"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/media_sysphoto_bg">
+
+        <!--<ImageView-->
+            <!--android:id="@+id/sys_media_iv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:src="@drawable/ic_media_camera" />-->
+
+        <TextView
+            android:id="@+id/sys_media_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/media_sysphotoworld_bg"
+            android:textSize="16sp" />
+    </RelativeLayout>
+</RelativeLayout>

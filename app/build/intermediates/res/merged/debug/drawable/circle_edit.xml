@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <stroke
+        android:width="1px"
+        android:color="@color/msg_edit_stroke" />
+
+    <corners android:radius="4dp" >
+    </corners>
+
+    <gradient
+        android:endColor="#FFFFFF"
+        android:startColor="#FFFFFF" />
+
+</shape><!-- From: file:/D:/EcliProj2/TestPhotoSingle1/app/src/main/res/drawable/circle_edit.xml -->

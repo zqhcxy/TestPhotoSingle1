@@ -1,0 +1,316 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .gradle\
+* .gradle\2.2.1\
+* .gradle\2.2.1\taskArtifacts\
+* .gradle\2.2.1\taskArtifacts\cache.properties
+* .gradle\2.2.1\taskArtifacts\cache.properties.lock
+* .gradle\2.2.1\taskArtifacts\fileHashes.bin
+* .gradle\2.2.1\taskArtifacts\fileSnapshots.bin
+* .gradle\2.2.1\taskArtifacts\outputFileStates.bin
+* .gradle\2.2.1\taskArtifacts\taskArtifacts.bin
+* .idea\
+* .idea\.name
+* .idea\compiler.xml
+* .idea\copyright\
+* .idea\copyright\profiles_settings.xml
+* .idea\gradle.xml
+* .idea\libraries\
+* .idea\libraries\android_support_v4.xml
+* .idea\libraries\glide_3_6_1.xml
+* .idea\misc.xml
+* .idea\modules.xml
+* .idea\vcs.xml
+* .idea\workspace.xml
+* build\
+* build\generated\
+* build\generated\source\
+* build\generated\source\buildConfig\
+* build\generated\source\buildConfig\androidTest\
+* build\generated\source\buildConfig\androidTest\debug\
+* build\generated\source\buildConfig\androidTest\debug\com\
+* build\generated\source\buildConfig\androidTest\debug\com\example\
+* build\generated\source\buildConfig\androidTest\debug\com\example\testphoto\
+* build\generated\source\buildConfig\androidTest\debug\com\example\testphoto\test\
+* build\generated\source\buildConfig\androidTest\debug\com\example\testphoto\test\BuildConfig.java
+* build\generated\source\buildConfig\debug\
+* build\generated\source\buildConfig\debug\com\
+* build\generated\source\buildConfig\debug\com\example\
+* build\generated\source\buildConfig\debug\com\example\testphoto\
+* build\generated\source\buildConfig\debug\com\example\testphoto\BuildConfig.java
+* build\generated\source\r\
+* build\generated\source\r\debug\
+* build\generated\source\r\debug\com\
+* build\generated\source\r\debug\com\example\
+* build\generated\source\r\debug\com\example\testphoto\
+* build\generated\source\r\debug\com\example\testphoto\R.java
+* build\intermediates\
+* build\intermediates\classes\
+* build\intermediates\classes\debug\
+* build\intermediates\classes\debug\com\
+* build\intermediates\classes\debug\com\example\
+* build\intermediates\classes\debug\com\example\testphoto\
+* build\intermediates\classes\debug\com\example\testphoto\BuildConfig.class
+* build\intermediates\classes\debug\com\example\testphoto\GalleryActivity$1.class
+* build\intermediates\classes\debug\com\example\testphoto\GalleryActivity.class
+* build\intermediates\classes\debug\com\example\testphoto\MainActivity.class
+* build\intermediates\classes\debug\com\example\testphoto\R$anim.class
+* build\intermediates\classes\debug\com\example\testphoto\R$attr.class
+* build\intermediates\classes\debug\com\example\testphoto\R$color.class
+* build\intermediates\classes\debug\com\example\testphoto\R$dimen.class
+* build\intermediates\classes\debug\com\example\testphoto\R$drawable.class
+* build\intermediates\classes\debug\com\example\testphoto\R$id.class
+* build\intermediates\classes\debug\com\example\testphoto\R$layout.class
+* build\intermediates\classes\debug\com\example\testphoto\R$menu.class
+* build\intermediates\classes\debug\com\example\testphoto\R$string.class
+* build\intermediates\classes\debug\com\example\testphoto\R$style.class
+* build\intermediates\classes\debug\com\example\testphoto\R$styleable.class
+* build\intermediates\classes\debug\com\example\testphoto\R.class
+* build\intermediates\classes\debug\com\example\testphoto\ShareActivity.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\
+* build\intermediates\classes\debug\com\example\testphoto\adapter\FragmentViewPagerAdapter$OnExtraPageChangeListener.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\FragmentViewPagerAdapter.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\JieVideoListViewAdapter$1.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\JieVideoListViewAdapter$ViewHolder.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\JieVideoListViewAdapter.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\MainGVAdapter$1.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\MainGVAdapter$ViewHolder.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\MainGVAdapter.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\MyAudioAdapter$1.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\MyAudioAdapter$ViewHolder.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\MyAudioAdapter.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\PhotoAlbumLVAdapter$1.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\PhotoAlbumLVAdapter$ViewHolder.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\PhotoAlbumLVAdapter.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\PhotoWallAdapter$1.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\PhotoWallAdapter$ViewHolder.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\PhotoWallAdapter.class
+* build\intermediates\classes\debug\com\example\testphoto\adapter\PreViewPhotoAdapter.class
+* build\intermediates\classes\debug\com\example\testphoto\cache\
+* build\intermediates\classes\debug\com\example\testphoto\cache\MemoryCache.class
+* build\intermediates\classes\debug\com\example\testphoto\comment\
+* build\intermediates\classes\debug\com\example\testphoto\comment\MyGlideModule$1.class
+* build\intermediates\classes\debug\com\example\testphoto\comment\MyGlideModule.class
+* build\intermediates\classes\debug\com\example\testphoto\fragment\
+* build\intermediates\classes\debug\com\example\testphoto\fragment\AlbumActivity.class
+* build\intermediates\classes\debug\com\example\testphoto\fragment\PhotoAlbumFragment$1.class
+* build\intermediates\classes\debug\com\example\testphoto\fragment\PhotoAlbumFragment.class
+* build\intermediates\classes\debug\com\example\testphoto\fragment\ShowAllPhotoFragment$1.class
+* build\intermediates\classes\debug\com\example\testphoto\fragment\ShowAllPhotoFragment$2.class
+* build\intermediates\classes\debug\com\example\testphoto\fragment\ShowAllPhotoFragment$3.class
+* build\intermediates\classes\debug\com\example\testphoto\fragment\ShowAllPhotoFragment.class
+* build\intermediates\classes\debug\com\example\testphoto\fragment\ShowAudioFragment$1.class
+* build\intermediates\classes\debug\com\example\testphoto\fragment\ShowAudioFragment.class
+* build\intermediates\classes\debug\com\example\testphoto\fragment\ShowVideoFragment$1.class
+* build\intermediates\classes\debug\com\example\testphoto\fragment\ShowVideoFragment.class
+* build\intermediates\classes\debug\com\example\testphoto\model\
+* build\intermediates\classes\debug\com\example\testphoto\model\ConfirmLocalFileInf.class
+* build\intermediates\classes\debug\com\example\testphoto\model\MainShowPhoto.class
+* build\intermediates\classes\debug\com\example\testphoto\model\MusicInfo.class
+* build\intermediates\classes\debug\com\example\testphoto\model\MyAudio.class
+* build\intermediates\classes\debug\com\example\testphoto\model\MySparseBooleanArray.class
+* build\intermediates\classes\debug\com\example\testphoto\model\MyVideo.class
+* build\intermediates\classes\debug\com\example\testphoto\model\PhotoAlbumLVItem.class
+* build\intermediates\classes\debug\com\example\testphoto\util\
+* build\intermediates\classes\debug\com\example\testphoto\util\DensityUtil.class
+* build\intermediates\classes\debug\com\example\testphoto\util\FileUtil.class
+* build\intermediates\classes\debug\com\example\testphoto\util\FileUtils.class
+* build\intermediates\classes\debug\com\example\testphoto\util\GetLocalFile$1.class
+* build\intermediates\classes\debug\com\example\testphoto\util\GetLocalFile.class
+* build\intermediates\classes\debug\com\example\testphoto\util\PaintUtil.class
+* build\intermediates\classes\debug\com\example\testphoto\util\SDCardImageLoader$1.class
+* build\intermediates\classes\debug\com\example\testphoto\util\SDCardImageLoader$2.class
+* build\intermediates\classes\debug\com\example\testphoto\util\SDCardImageLoader$3$1.class
+* build\intermediates\classes\debug\com\example\testphoto\util\SDCardImageLoader$3$2.class
+* build\intermediates\classes\debug\com\example\testphoto\util\SDCardImageLoader$3$3.class
+* build\intermediates\classes\debug\com\example\testphoto\util\SDCardImageLoader$3.class
+* build\intermediates\classes\debug\com\example\testphoto\util\SDCardImageLoader$4.class
+* build\intermediates\classes\debug\com\example\testphoto\util\SDCardImageLoader$ImageCallback.class
+* build\intermediates\classes\debug\com\example\testphoto\util\SDCardImageLoader.class
+* build\intermediates\classes\debug\com\example\testphoto\util\ScreenUtils.class
+* build\intermediates\classes\debug\com\example\testphoto\util\Utility.class
+* build\intermediates\classes\debug\com\example\testphoto\views\
+* build\intermediates\classes\debug\com\example\testphoto\views\CircleImageView.class
+* build\intermediates\classes\debug\com\example\testphoto\views\CropImageView1.class
+* build\intermediates\classes\debug\com\example\testphoto\views\FloatDrawable1.class
+* build\intermediates\classes\debug\com\example\testphoto\views\MyGalleryPageView.class
+* build\intermediates\classes\debug\com\example\testphoto\views\SquareRelativeLayout.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\
+* build\intermediates\classes\debug\com\example\testphoto\zoom\Compat.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\IPhotoView.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\PhotoView.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\PhotoViewAttacher$1.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\PhotoViewAttacher$2.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\PhotoViewAttacher$AnimatedZoomRunnable.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\PhotoViewAttacher$FlingRunnable.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\PhotoViewAttacher$OnMatrixChangedListener.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\PhotoViewAttacher$OnPhotoTapListener.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\PhotoViewAttacher$OnViewTapListener.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\PhotoViewAttacher.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\SDK16.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\ScrollerProxy$GingerScroller.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\ScrollerProxy$PreGingerScroller.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\ScrollerProxy.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\VersionedGestureDetector$CupcakeDetector.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\VersionedGestureDetector$EclairDetector.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\VersionedGestureDetector$FroyoDetector$1.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\VersionedGestureDetector$FroyoDetector.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\VersionedGestureDetector$OnGestureListener.class
+* build\intermediates\classes\debug\com\example\testphoto\zoom\VersionedGestureDetector.class
+* build\intermediates\dex-cache\
+* build\intermediates\dex-cache\cache.xml
+* build\intermediates\dex\
+* build\intermediates\dex\debug\
+* build\intermediates\dex\debug\classes.dex
+* build\intermediates\gradle_project_sync_data.bin
+* build\intermediates\incremental\
+* build\intermediates\incremental\aidl\
+* build\intermediates\incremental\aidl\androidTest\
+* build\intermediates\incremental\aidl\androidTest\debug\
+* build\intermediates\incremental\aidl\androidTest\debug\dependency.store
+* build\intermediates\incremental\aidl\debug\
+* build\intermediates\incremental\aidl\debug\dependency.store
+* build\intermediates\incremental\mergeAssets\
+* build\intermediates\incremental\mergeAssets\androidTest\
+* build\intermediates\incremental\mergeAssets\androidTest\debug\
+* build\intermediates\incremental\mergeAssets\androidTest\debug\merger.xml
+* build\intermediates\incremental\mergeAssets\debug\
+* build\intermediates\incremental\mergeAssets\debug\merger.xml
+* build\intermediates\incremental\mergeResources\
+* build\intermediates\incremental\mergeResources\androidTest\
+* build\intermediates\incremental\mergeResources\androidTest\debug\
+* build\intermediates\incremental\mergeResources\androidTest\debug\merger.xml
+* build\intermediates\incremental\mergeResources\debug\
+* build\intermediates\incremental\mergeResources\debug\merger.xml
+* build\intermediates\manifests\
+* build\intermediates\manifests\androidTest\
+* build\intermediates\manifests\androidTest\debug\
+* build\intermediates\manifests\androidTest\debug\AndroidManifest.xml
+* build\intermediates\manifests\full\
+* build\intermediates\manifests\full\debug\
+* build\intermediates\manifests\full\debug\AndroidManifest.xml
+* build\intermediates\pre-dexed\
+* build\intermediates\pre-dexed\debug\
+* build\intermediates\pre-dexed\debug\android-support-v4-edc27667f5e469f90adcf5089259ca8a02d899c7.jar
+* build\intermediates\pre-dexed\debug\glide-3.6.1-01f32bd1dfc6eec9c7d6746bfbeeabc84955a8f5.jar
+* build\intermediates\res\
+* build\intermediates\res\debug\
+* build\intermediates\res\debug\anim\
+* build\intermediates\res\debug\anim\activity_translate_in.xml
+* build\intermediates\res\debug\anim\activity_translate_out.xml
+* build\intermediates\res\debug\anim\in_from_left.xml
+* build\intermediates\res\debug\anim\in_from_right.xml
+* build\intermediates\res\debug\anim\out_from_left.xml
+* build\intermediates\res\debug\anim\out_from_right.xml
+* build\intermediates\res\debug\drawable-hdpi-v4\
+* build\intermediates\res\debug\drawable-hdpi-v4\arrow_right.png
+* build\intermediates\res\debug\drawable-hdpi-v4\back_arrow.png
+* build\intermediates\res\debug\drawable-hdpi-v4\back_arrow_press.png
+* build\intermediates\res\debug\drawable-hdpi-v4\checkbox_checked.png
+* build\intermediates\res\debug\drawable-hdpi-v4\checkbox_normal.png
+* build\intermediates\res\debug\drawable-hdpi-v4\clip_point.png
+* build\intermediates\res\debug\drawable-hdpi-v4\cue_group_normal.png
+* build\intermediates\res\debug\drawable-hdpi-v4\empty_photo.png
+* build\intermediates\res\debug\drawable-hdpi-v4\ic_file_folder.png
+* build\intermediates\res\debug\drawable-hdpi-v4\ic_launcher.png
+* build\intermediates\res\debug\drawable-hdpi-v4\ic_now_playing.png
+* build\intermediates\res\debug\drawable-hdpi-v4\ic_picturedeleted.9.png
+* build\intermediates\res\debug\drawable-hdpi-v4\ic_sms_timer_pause.png
+* build\intermediates\res\debug\drawable-hdpi-v4\ic_sms_timer_running.png
+* build\intermediates\res\debug\drawable-mdpi-v4\
+* build\intermediates\res\debug\drawable-mdpi-v4\ic_launcher.png
+* build\intermediates\res\debug\drawable-xhdpi-v4\
+* build\intermediates\res\debug\drawable-xhdpi-v4\ic_launcher.png
+* build\intermediates\res\debug\drawable-xxhdpi-v4\
+* build\intermediates\res\debug\drawable-xxhdpi-v4\ic_launcher.png
+* build\intermediates\res\debug\drawable\
+* build\intermediates\res\debug\drawable\selector_back_arrow.xml
+* build\intermediates\res\debug\drawable\selector_checkbox.xml
+* build\intermediates\res\debug\drawable\xml_back_textcolor.xml
+* build\intermediates\res\debug\layout\
+* build\intermediates\res\debug\layout\activity_main.xml
+* build\intermediates\res\debug\layout\activity_show_photo.xml
+* build\intermediates\res\debug\layout\album_activity.xml
+* build\intermediates\res\debug\layout\allaudio_item.xml
+* build\intermediates\res\debug\layout\audiofold_item.xml
+* build\intermediates\res\debug\layout\comm_topbar_ll.xml
+* build\intermediates\res\debug\layout\gallery_activity.xml
+* build\intermediates\res\debug\layout\main_gridview_item.xml
+* build\intermediates\res\debug\layout\photo_album_activity.xml
+* build\intermediates\res\debug\layout\photo_album_lv_item.xml
+* build\intermediates\res\debug\layout\photo_wall_item.xml
+* build\intermediates\res\debug\layout\previewphoto_item.xml
+* build\intermediates\res\debug\layout\share_activity.xml
+* build\intermediates\res\debug\layout\showvideo_activity.xml
+* build\intermediates\res\debug\menu\
+* build\intermediates\res\debug\menu\show_photo.xml
+* build\intermediates\res\debug\values-v11\
+* build\intermediates\res\debug\values-v11\values-v11.xml
+* build\intermediates\res\debug\values-v14\
+* build\intermediates\res\debug\values-v14\values-v14.xml
+* build\intermediates\res\debug\values-w820dp-v13\
+* build\intermediates\res\debug\values-w820dp-v13\values-w820dp-v13.xml
+* build\intermediates\res\debug\values\
+* build\intermediates\res\debug\values\values.xml
+* build\intermediates\resources\
+* build\intermediates\resources\resources-debug-androidTest.ap_
+* build\intermediates\resources\resources-debug.ap_
+* build\outputs\
+* build\outputs\apk\
+* build\outputs\apk\TestPhotoSingle-debug-unaligned.apk
+* build\outputs\apk\TestPhotoSingle-debug.apk
+* build\outputs\logs\
+* build\outputs\logs\manifest-merger-debug-report.txt
+* gradle\
+* gradle\wrapper\
+* gradle\wrapper\gradle-wrapper.jar
+* gradle\wrapper\gradle-wrapper.properties
+* gradlew
+* gradlew.bat
+* ic_launcher-web.png
+* proguard-rules.pro
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:21.0.3
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => app\src\main\AndroidManifest.xml
+* assets\ => app\src\main\assets
+* libs\glide-3.6.1.jar => app\libs\glide-3.6.1.jar
+* res\ => app\src\main\res\
+* src\ => app\src\main\java\
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

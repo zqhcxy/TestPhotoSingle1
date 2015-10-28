@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<shape android:shape="rectangle">-->
+    <!-- from top to bottom -->
+    <item>
+        <shape android:shape="rectangle">
+            <!-- from top to bottom -->
+            <gradient
+                android:angle="270"
+                android:endColor="@color/top_shadow_end"
+                android:startColor="@color/top_shadow_star" />
+
+        </shape>
+    </item>
+    <!--//这是背景部分，要实现一个背景与阴影部分就要下面这个-->
+    <!--content-->
+    <!--<item android:bottom="4dp">-->
+    <!--<shape android:shape="rectangle">-->
+    <!--<solid android:color="@color/top_color" />-->
+    <!--</shape>-->
+    <!--</item>-->
+</layer-list><!-- From: file:/D:/EcliProj2/TestPhotoSingle1/app/src/main/res/drawable/buttom_shadow.xml -->

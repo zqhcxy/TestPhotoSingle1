@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/media_sysphoto_bg">
+
+    <com.example.testphoto.views.SquareRelativeLayout
+        android:id="@+id/media_iv_ly"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/photo_wall_item_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/empty_photo" />
+
+        <ImageView
+            android:id="@+id/video_ico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignBottom="@+id/photo_wall_item_photo"
+            android:layout_alignLeft="@+id/photo_wall_item_photo"
+            android:gravity="center"
+            android:src="@drawable/ic_media_video"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/chackbox_ly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <CheckBox
+                android:id="@+id/photo_wall_item_cb"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:button="@drawable/selector_checkbox"
+                android:clickable="false"
+                android:focusable="false" />
+        </LinearLayout>
+    </com.example.testphoto.views.SquareRelativeLayout>
+
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/sys_media_ly"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:gravity="center"-->
+        <!--android:visibility="gone">-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/sys_media_iv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:src="@drawable/ic_media_camera" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/sys_media_tv"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/sys_media_iv"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:textColor="@color/media_sysphotoworld_bg"-->
+            <!--android:textSize="16sp" />-->
+    <!--</RelativeLayout>-->
+</RelativeLayout><!-- From: file:/D:/EcliProj2/TestPhotoSingle1/app/src/main/res/layout/photo_wall_item.xml -->

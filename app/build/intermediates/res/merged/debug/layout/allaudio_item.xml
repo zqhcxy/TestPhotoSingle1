@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.testphoto.views.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/audio_itemly"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <RelativeLayout
+        android:id="@+id/nomal_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <com.example.testphoto.views.MyMediaPlayerView
+            android:id="@+id/media_play_ly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp" />
+
+
+        <TextView
+            android:id="@+id/allaudio_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/media_play_ly"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/media_audio_txt"
+            android:textSize="16sp"
+            android:visibility="gone"/>
+
+
+        <LinearLayout
+            android:id="@+id/allaudio_chackbox_ly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="0dp">
+
+            <CheckBox
+                android:id="@+id/allaudio_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/selector_checkbox"
+                android:button="@null"
+                android:clickable="false"
+                android:focusable="false" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</com.example.testphoto.views.SquareRelativeLayout><!-- From: file:/D:/EcliProj2/TestPhotoSingle1/app/src/main/res/layout/allaudio_item.xml -->

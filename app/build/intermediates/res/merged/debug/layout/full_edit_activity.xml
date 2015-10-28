@@ -1,0 +1,264 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fulledit_bg">
+
+
+    <EditText
+        android:id="@+id/fulledit_msg_et"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/fulledit_limit_tv"
+        android:layout_weight="1"
+        android:background="@color/fulledit_bg"
+        android:gravity="top"
+        android:hint="@string/main_msg"
+        android:padding="16dp"
+        android:paddingTop="8dp"
+        android:textColor="@color/world"
+        android:textColorHint="@color/fulledit_edit"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/fulledit_limit_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fulledit_mediashow_ly"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/fulledit_bg"
+        android:text="@string/msg_limit"
+        android:textColor="@color/msglimit"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+
+    <LinearLayout
+        android:id="@+id/fulledit_mediashow_ly"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_above="@+id/full_edit_btline"
+        android:background="@color/gray2_bg"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/fulledit_thumbnail_iv"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/image_stroke_shape"
+            android:padding="1dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/empty_photo" />
+
+        <com.example.testphoto.views.MyMediaPlayerView
+            android:id="@+id/fulledit_audio_thumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/fulledit_title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/mediashow_world"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/fulledit_clear_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:scaleType="center"
+            android:src="@drawable/but_add_close" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/full_edit_btline"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@+id/fulledit_menu_ly"
+        android:background="@color/gray4_bg"
+        android:orientation="horizontal" />
+
+
+    <LinearLayout
+        android:id="@+id/fulledit_menu_ly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray5_bg"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/gray5_bg"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/gray4_bg" />
+
+            <ImageView
+                android:id="@+id/fulledit_addmenu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/full_menu_bg_spress"
+                android:scaleType="center"
+                android:src="@drawable/full_menu_selector" />
+
+            <LinearLayout
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/gray4_bg" />
+
+
+            <ImageView
+                android:id="@+id/fulledit_localphoto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/full_menu_bg_spress"
+                android:scaleType="center"
+                android:src="@drawable/full_local_pic_seletor" />
+
+            <LinearLayout
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/gray4_bg" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="center"
+                android:src="@drawable/full_fhrase_seletor" />
+
+            <LinearLayout
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/gray4_bg" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/full_menu_bg_spress"
+                android:scaleType="center"
+                android:src="@drawable/full_collect_selector" />
+
+            <LinearLayout
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/gray4_bg" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/full_menu_bg_spress"
+                android:scaleType="center"
+                android:src="@drawable/full_spellcheck_selector" />
+
+            <LinearLayout
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/gray4_bg" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/full_menu_bg_spress"
+                android:scaleType="center"
+                android:src="@drawable/full_emoji_selector" />
+
+            <LinearLayout
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/gray4_bg" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/full_menu_bg_spress"
+                android:scaleType="center"
+                android:src="@drawable/full_voice_selector" />
+
+            <LinearLayout
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/gray4_bg" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fulledit_buttonmenu_ly"
+            android:layout_width="match_parent"
+            android:layout_height="217dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/gray4_bg" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/full_menu_vp"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/title_ly" />
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<Button-->
+            <!--android:id="@+id/fulledit_audio_bt"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="@string/loacl_audio" />-->
+
+            <!--<Button-->
+            <!--android:id="@+id/fulledit_video_bt"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="@string/loacl_video" />-->
+
+            <!--<Button-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="名片" />-->
+
+            <!--<Button-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="位置" />-->
+            <!--</LinearLayout>-->
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
+<!-- From: file:/D:/EcliProj2/TestPhotoSingle1/app/src/main/res/layout/full_edit_activity.xml -->

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridView
+        android:id="@+id/video_show"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/media_bg"
+        android:horizontalSpacing="2dp"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="3"
+        android:scrollingCache="false"
+        android:verticalSpacing="2dp"></GridView>
+
+
+    <TextView
+        android:id="@+id/filetip_button_ly"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/photo_button_ly"
+        android:gravity="center"
+        android:text="您选择的文件超出彩信规格，将转为超级短信发送给对方"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+</RelativeLayout><!-- From: file:/D:/EcliProj2/TestPhotoSingle1/app/src/main/res/layout/showvideo_activity.xml -->
