@@ -2,10 +2,8 @@ package com.example.testphoto.views;
 
 import android.content.ContentUris;
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
@@ -18,8 +16,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.testphoto.R;
 import com.example.testphoto.util.DensityUtil;
-
-import java.io.IOException;
+import com.example.testphoto.util.MyMusicPlayerContral;
 
 /**
  * 自定义播放器控件
@@ -27,7 +24,6 @@ import java.io.IOException;
  */
 public class MyMediaPlayerView extends RelativeLayout {
 
-    private MediaPlayer mMediaPlayer;
     private int mPlayingId;// 当前播放音频id
     private Context context;
 
@@ -36,14 +32,12 @@ public class MyMediaPlayerView extends RelativeLayout {
     Uri sArtworkUri = Uri
             .parse("content://media/external/audio/albumart");
 
-    private long albumId;
-    private int audioId;
-    //    private String aduioPath;
+    public long albumId;
+    public int audioId;
     private int circleiv_wh = 70;//单位dp，然后自己转换
     private int playinng_wh = 25;//单位dp，然后自己转换
 
     private RotateAnimation mAnim;
-    private CompletionCallback completionCallback;
 
 
     public MyMediaPlayerView(Context context, AttributeSet attrs) {
@@ -61,12 +55,14 @@ public class MyMediaPlayerView extends RelativeLayout {
 
         int circleiv = DensityUtil.dip2px(context, circleiv_wh);
         int playingiv = DensityUtil.dip2px(context, playinng_wh);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(circleiv, circleiv);
-        RelativeLayout.LayoutParams layoutParams1 = new RelativeLayout.LayoutParams(playingiv, playingiv);
+        LayoutParams layoutParams = new LayoutParams(circleiv, circleiv);
+        LayoutParams layoutParams1 = new LayoutParams(playingiv, playingiv);
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);//addRule参数对应RelativeLayout XML布局的属性
         layoutParams1.addRule(RelativeLayout.CENTER_IN_PARENT);
         addView(circleImageView, layoutParams);
         addView(audio_playing, layoutParams1);
+
+
     }
 
     public void setImageViewWH(int circleiv_wh, int playinng_wh) {
@@ -74,16 +70,27 @@ public class MyMediaPlayerView extends RelativeLayout {
         circleiv_wh = DensityUtil.dip2px(context, circleiv_wh);
         playinng_wh = DensityUtil.dip2px(context, playinng_wh);
 
-        RelativeLayout.LayoutParams parents = (RelativeLayout.LayoutParams) circleImageView.getLayoutParams();
+        LayoutParams parents = (LayoutParams) circleImageView.getLayoutParams();
         parents.width = circleiv_wh;
         parents.height = circleiv_wh;
         circleImageView.setLayoutParams(parents);
 
-        RelativeLayout.LayoutParams parents1 = (RelativeLayout.LayoutParams) audio_playing.getLayoutParams();
+        LayoutParams parents1 = (LayoutParams) audio_playing.getLayoutParams();
         parents1.width = playinng_wh;
         parents1.height = playinng_wh;
         audio_playing.setLayoutParams(parents1);
     }
+
+//    public void initMediaData(long albumId, int audioId, long position) {
+//
+//        this.albumId = albumId;
+//        this.audioId = audioId;
+////        this.aduioPath = aduioPath;
+//        loadPic();
+//        if (MyMusicPlayerContral.getInstent().isPlaying(position)) {
+//            circleImageView.startAnimation(mAnim);
+//        }
+//    }
 
     public void initMediaData(long albumId, int audioId) {
 
@@ -91,7 +98,20 @@ public class MyMediaPlayerView extends RelativeLayout {
         this.audioId = audioId;
 //        this.aduioPath = aduioPath;
         loadPic();
+        long position = Long.parseLong(this.getTag() + "");
+        if (MyMusicPlayerContral.getInstent(context).isPlaying(position)) {
+            initAnim();
+            if (circleImageView.getAnimation() == null ) {
+                circleImageView.startAnimation(mAnim);
+            }
+//            if (mAnim.hasStarted())
+//                circleImageView.startAnimation(mAnim);
+        }  else{
+            circleImageView.clearAnimation();
+        }
+
     }
+
 
     private void loadPic() {
         Uri uri;
@@ -119,99 +139,6 @@ public class MyMediaPlayerView extends RelativeLayout {
 
     }
 
-    /**
-     * 外部调用播放，需要回调的
-     *
-     * @param aduioPath
-     * @param completionCallback
-     */
-    public void setMyOnClickListener(String aduioPath, CompletionCallback completionCallback) {
-        if (completionCallback != null)//有些地方不需要这个
-            this.completionCallback = completionCallback;
-        if (aduioPath != null) {
-            if (mMediaPlayer != null && mMediaPlayer.isPlaying())
-                stopMediaPlayer();
-            else
-                playingMediaPlayer(aduioPath, audioId);
-        }
-    }
-
-    /**
-     * 外部调用播放，不许要播放完成回调
-     *
-     * @param aduioPath
-     */
-    public void setMyOnClickListener(String aduioPath) {
-        if (aduioPath != null) {
-            if (mMediaPlayer != null && mMediaPlayer.isPlaying())
-                stopMediaPlayer();
-            else
-                playingMediaPlayer(aduioPath, audioId);
-        }
-    }
-
-    /**
-     * 音频播放
-     */
-    private void playingMediaPlayer(String path, int id) {
-        stopMediaPlayer();
-        mMediaPlayer = new MediaPlayer();
-        try {
-            mMediaPlayer.setDataSource(path);
-            mMediaPlayer.setOnCompletionListener(myOnCompletionListener);
-            // 手机铃声的声音
-            // mMediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);
-            mMediaPlayer.prepare();
-            mMediaPlayer.start();
-            mPlayingId = id;
-            audio_playing.setImageResource(R.drawable.ic_audio_stop);
-            initAnim();
-            Log.e("初始化动画", "启动");
-            circleImageView.setAnimation(mAnim);
-        } catch (IOException e) {
-            Log.w("MusicPicker", "Unable to play track", e);
-        }
-    }
-
-    public void stopMediaPlayer() {
-        if (mMediaPlayer != null) {
-            audio_playing.setImageResource(R.drawable.ic_audio_play);
-            mMediaPlayer.stop();
-            mMediaPlayer.reset();
-            mMediaPlayer.release();
-            mMediaPlayer = null;
-            mPlayingId = -1;
-            circleImageView.clearAnimation();
-        }
-    }
-
-
-    // 播放完成
-    private MediaPlayer.OnCompletionListener myOnCompletionListener = new MediaPlayer.OnCompletionListener() {
-
-        @Override
-        public void onCompletion(MediaPlayer mp) {
-            if (mMediaPlayer == mp) {
-                audio_playing.setImageResource(R.drawable.ic_audio_play);
-                mp.stop();
-                mp.reset();
-                mp.release();
-                mMediaPlayer = null;
-                mPlayingId = -1;
-                circleImageView.clearAnimation();
-                if (completionCallback != null)
-                    completionCallback.CompletionMusic();
-            }
-        }
-    };
-
-
-    public boolean isPlaying() {
-        if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
-            return true;
-        }
-        return false;
-    }
 
     public void setPlaysate(boolean isplay) {
         if (isplay) {
@@ -256,10 +183,40 @@ public class MyMediaPlayerView extends RelativeLayout {
 
     }
 
-    // 对外界开放的回调接口
-    public interface CompletionCallback {
-        // 注意 此方法是用来设置播放完成后的回调
-        public void CompletionMusic();
+
+    public void setPlayingIcon(long posotion) {
+        if (MyMusicPlayerContral.getInstent(context).isPlaying(posotion)) {
+            audio_playing.setImageResource(R.drawable.ic_audio_stop);
+            MyMusicPlayerContral.getInstent(context).setLastMyMediaPlayerView(this);
+        }else{
+            audio_playing.setImageResource(R.drawable.ic_audio_play);
+        }
+
     }
+
+//    public void setDowloadIcon(long posotion) {
+//        if (!MyMusicPlayerContral.getInstent().isPlaying(posotion))
+//            audio_playing.setImageResource(R.drawable.ic_media_download);
+//
+//    }
+
+    /**
+     * 播放时的UI
+     */
+    public void playingUI() {
+        audio_playing.setImageResource(R.drawable.ic_audio_stop);
+        initAnim();
+        circleImageView.startAnimation(mAnim);
+    }
+
+    /**
+     * 停止播放UI
+     */
+    public void stopPlayingUI() {
+        audio_playing.setImageResource(R.drawable.ic_audio_play);
+        mPlayingId = -1;
+        circleImageView.clearAnimation();
+    }
+
 
 }

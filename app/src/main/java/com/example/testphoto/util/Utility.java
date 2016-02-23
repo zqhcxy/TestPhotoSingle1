@@ -2,10 +2,7 @@ package com.example.testphoto.util;
 
 import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
 import android.widget.Toast;
-
-import java.io.File;
 
 /**
  * 判断是有sd卡。判断是否是图片与视频工具类
@@ -57,7 +54,7 @@ public class Utility {
 	/** 判断该文件是否是一个图片。 */
 	public static boolean isImage(String fileName) {
 		return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")
-				|| fileName.endsWith(".png");
+				|| fileName.endsWith(".png")|| fileName.endsWith(".vnd.wap.wbmp");
 	}
 
 	/** 判断该文件是否是一个视频。 */

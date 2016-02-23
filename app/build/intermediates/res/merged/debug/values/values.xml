@@ -33,6 +33,7 @@
     <color name="gray6_bg">#ededed</color>
     <color name="gray_bg">#cccccc</color>
     <color name="gray_dark_bg">#666666</color>
+    <color name="half_translant_col">#99252d3c</color>
     <color name="image_checked_bg">#66000000</color>
     <color name="light_gray">#dddddd</color>
     <color name="line1">#d2d2d2</color>
@@ -47,6 +48,7 @@
     <color name="media_grouptit_bg">#aaacb0</color>
     <color name="media_sysphoto_bg">#323845</color>
     <color name="media_sysphotoworld_bg">#d0d1d3</color>
+    <color name="medial_tabtitle_col">#83878f</color>
     <color name="mediashow_world">#404040</color>
     <color name="msg_edit_stroke">#c1c1c3</color>
     <color name="msglimit">#929292</color>
@@ -91,10 +93,14 @@
     <string name="action_settings">Settings</string>
     <string name="album_all">全部</string>
     <string name="album_file">文件夹</string>
+    <string name="all_photo_compression">压缩图片（彩信）</string>
+    <string name="all_photo_hcmms">超级短信</string>
     <string name="app_name">TestPhoto</string>
     <string name="audio_corder">录制音频</string>
     <string name="cut_photo">截图</string>
     <string name="hello_world">Hello world!</string>
+    <string name="limit_media1">您选择的文件超出彩信规格，将转为</string>
+    <string name="limit_media2">发送给对方</string>
     <string name="loacl_audio">音频</string>
     <string name="loacl_photo">图片</string>
     <string name="loacl_video">视频</string>
@@ -106,6 +112,7 @@
     <string name="photo_album">图库</string>
     <string name="photo_corder">拍摄照片</string>
     <string name="photo_original">原图</string>
+    <string name="pref_prepare_look_title">预览</string>
     <string name="select_album">选择相册</string>
     <string name="select_audio">选择音频</string>
     <string name="select_image">选择图片</string>

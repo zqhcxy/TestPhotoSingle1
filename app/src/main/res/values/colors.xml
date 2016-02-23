@@ -85,6 +85,6 @@
     <color name="fulledit_bg">#f7f7f7</color>
     <!--选中的多媒体文件名字颜色-->
     <color name="mediashow_world">#404040</color>
-
-
+    <color name="medial_tabtitle_col">#83878f</color>
+    <color name="half_translant_col">#99252d3c</color>
 </resources>

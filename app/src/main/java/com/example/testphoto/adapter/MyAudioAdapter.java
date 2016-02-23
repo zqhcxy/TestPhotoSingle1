@@ -1,14 +1,19 @@
 package com.example.testphoto.adapter;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,10 +21,9 @@ import android.widget.TextView;
 
 import com.example.testphoto.R;
 import com.example.testphoto.fragment.ShowAudioFragment;
-import com.example.testphoto.model.MyAudio;
 import com.example.testphoto.model.MySparseBooleanArray;
 import com.example.testphoto.util.DensityUtil;
-import com.example.testphoto.util.MyMediaPlayerContral;
+import com.example.testphoto.util.MyMusicPlayerContral;
 import com.example.testphoto.util.ScreenUtils;
 import com.example.testphoto.views.MyMediaPlayerView;
 
@@ -30,7 +34,7 @@ import java.util.List;
  *
  * @author zqh-pc
  */
-public class MyAudioAdapter extends BaseAdapter {
+public class MyAudioAdapter extends CursorAdapter {
 
     private static final String AUDIO = "Audio";
     private static final String MYAUDIO = "MyAudio";
@@ -39,60 +43,59 @@ public class MyAudioAdapter extends BaseAdapter {
     private static final int MYAUDIO_TYPE = 1;
     private static final int SYSAUDIO_TYPE = 2;
 
-    private List<MyAudio> listAudios;
+    //    private List<MyAudio> listAudios;
+    private List<String> syslist;
     private LayoutInflater mLayoutInflater;
     private ShowAudioFragment showAudioFragment;
     private Context context;
     private RelativeLayout.LayoutParams layoutParams;
-    /**
-     * 音频播放控制器
-     */
-    private MyMediaPlayerContral myMediaPlayerContral;
-    //    private Map<Integer, Boolean> hashMap;
-//    private static SparseBooleanArray selectionMap;
     int seletionpos = -1;
+    private RingtoneManager mRingtoneManager;
 
-
-    public MyAudioAdapter(Context context, ShowAudioFragment showAudioFragment,
-                          List<MyAudio> listAudios) {
+    public MyAudioAdapter(Context context, Cursor c, List<String> list, ShowAudioFragment showAudioFragment) {
+        super(context, c, true);
         this.context = context;
+        syslist = list;
         mLayoutInflater = LayoutInflater.from(context);
-        this.listAudios = listAudios;
         this.showAudioFragment = showAudioFragment;
-        myMediaPlayerContral = new MyMediaPlayerContral(context);
-//        selectionMap = new SparseBooleanArray();
-
         int imgw = (ScreenUtils.getScreenW() - DensityUtil.dip2px(context, 4)) / 3;
         layoutParams = new RelativeLayout.LayoutParams(imgw, imgw);
     }
 
+    public void setRingtoneList(RingtoneManager ringtoneList) {
+        mRingtoneManager = ringtoneList;
+    }
+
     @Override
     public int getCount() {
-        return listAudios.size();
+        Cursor cursor = getCursor();
+        return cursor.getCount() + syslist.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listAudios.get(position);
+        if (position <= syslist.size() - 1) {
+            return syslist.get(position);
+        } else {
+            return getDataOfCursor(position - syslist.size());
+        }
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return position - syslist.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        MyAudio myAudio = listAudios.get(position);
-        switch (myAudio.getItemType()) {
-            case MYAUDIO:
+        if (position <= syslist.size() - 1) {
+            if (position == 0)
                 return MYAUDIO_TYPE;
-            case SYSAUDIO:
+            else
                 return SYSAUDIO_TYPE;
-            case AUDIO:
-                return AUDIO_TYPE;
+        } else {
+            return AUDIO_TYPE;
         }
-        return -1;
     }
 
     @Override
@@ -103,13 +106,12 @@ public class MyAudioAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
-        final MyAudio myAudio = listAudios.get(position);
+//        final MyAudio myAudio = listAudios.get(position);
         int mediatype = getItemViewType(position);
         if (convertView == null) {
             holder = new ViewHolder();
             if (mediatype == MYAUDIO_TYPE) {//调用系统录音
                 convertView = mLayoutInflater.inflate(R.layout.sysyem_media_item, null);
-//                holder.sys_media_iv = (ImageView) convertView.findViewById(R.id.sys_media_iv);
                 holder.sys_media_tv = (TextView) convertView.findViewById(R.id.sys_media_tv);
                 holder.sys_meida_ly = (RelativeLayout) convertView.findViewById(R.id.sys_meida_ly);
                 holder.sys_meida_ly.setLayoutParams(layoutParams);
@@ -144,7 +146,7 @@ public class MyAudioAdapter extends BaseAdapter {
         if (mediatype == MYAUDIO_TYPE) {
 //            holder.sys_media_iv.setImageResource(R.drawable.ic_media_recorder);
             holder.sys_media_tv.setText(R.string.audio_corder);
-            Drawable drawable =convertView.getResources().getDrawable(R.drawable.ic_media_recorder);
+            Drawable drawable = convertView.getResources().getDrawable(R.drawable.ic_media_recorder);
             drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
             holder.sys_media_tv.setCompoundDrawables(null, drawable, null, null);
         } else if (mediatype == SYSAUDIO_TYPE) {// 系统铃声
@@ -152,17 +154,21 @@ public class MyAudioAdapter extends BaseAdapter {
             holder.firstImageIV.setScaleType(ImageView.ScaleType.CENTER);
             holder.pathNameTV.setText(R.string.system_audio);
         } else if (mediatype == AUDIO_TYPE) {// 正常音频
-            final String filepath = myAudio.getPath();
+            final String filepath = getDataOfCursor(position - syslist.size());
+            String audioTitle = getTitleOfCursor(position - syslist.size());
+            long audioAlbumid = getAlbumidOfCursor(position - syslist.size());
+            int audioID = getIDOfCursor(position - syslist.size());
 
 
-            holder.checkBox.setChecked(MySparseBooleanArray.get(position));
+            holder.checkBox.setChecked(MySparseBooleanArray.get(audioID));
             holder.title.setVisibility(View.VISIBLE);
-            holder.chackbox_ly.setTag(R.id.tag_first, position);
+            holder.chackbox_ly.setTag(R.id.tag_first, audioID);
             holder.chackbox_ly.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    if (holder.checkBox.isChecked()) {
+                    boolean checkboxIscheck = holder.checkBox.isChecked();
+                    if (checkboxIscheck) {
                         holder.checkBox.setChecked(false);
                     } else {
                         holder.checkBox.setChecked(true);
@@ -174,29 +180,20 @@ public class MyAudioAdapter extends BaseAdapter {
 
                     showAudioFragment.setConfirmEnable();
                     notifyDataSetChanged();
-                    // 底部弹出区域
-                    boolean ischoice = showAudioFragment
-                            .isHaveChoice();
-                    if (ischoice) {
-                        showAudioFragment.showButtonLy();
-                    } else {
-                        showAudioFragment.hidButtonLy();
-                    }
-
                 }
             });
 
-            holder.title.setText(myAudio.getTitle());
-            holder.media_play_ly.initMediaData(myAudio.getAlbumid(), myAudio.getId());
-            holder.media_play_ly.setTag(position);
+            holder.title.setText(audioTitle);
+            holder.media_play_ly.setTag(audioID);
+            holder.media_play_ly.initMediaData(audioAlbumid, audioID);
 
 
-            if (seletionpos == position) {
+            if (seletionpos == audioID) {
                 holder.media_play_ly.setPlaysate(true);
-                holder.nomal_audio.setBackgroundColor(context.getResources().getColor(R.color.media_bg3));
+                holder.nomal_audio.setBackgroundColor(ContextCompat.getColor(context, R.color.media_bg3));
             } else {
                 holder.media_play_ly.setPlaysate(false);
-                holder.nomal_audio.setBackgroundColor(context.getResources().getColor(R.color.white));
+                holder.nomal_audio.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
             }
 
             holder.media_play_ly.setOnClickListener(new OnClickListener() {
@@ -208,7 +205,8 @@ public class MyAudioAdapter extends BaseAdapter {
                     } else {
                         seletionpos = position;
                     }
-                    myMediaPlayerContral.setMediaPlayerView(holder.media_play_ly, filepath, position, completionCallback);
+                    final Uri uri = Uri.parse(filepath);
+                    MyMusicPlayerContral.getInstent(context).setMediaPlayerView(holder.media_play_ly, uri, position, completionCallback);
                     notifyDataSetChanged();
                 }
             });
@@ -216,18 +214,21 @@ public class MyAudioAdapter extends BaseAdapter {
         return convertView;
     }
 
-
-    /**
-     * 外部因为界面切换或者黑屏之类的要停止播放
-     */
-    public void stopPlay() {
-        myMediaPlayerContral.stopPlay();
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        return null;
     }
+
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+
+    }
+
 
     /**
      * 音频播放完成回调
      */
-    private MyMediaPlayerView.CompletionCallback completionCallback = new MyMediaPlayerView.CompletionCallback() {
+    private MyMusicPlayerContral.CompletionCallback completionCallback = new MyMusicPlayerContral.CompletionCallback() {
 
         @Override
         public void CompletionMusic() {
@@ -236,6 +237,71 @@ public class MyAudioAdapter extends BaseAdapter {
         }
     };
 
+    /**
+     * 外部因为界面切换或者黑屏之类的要停止播放
+     */
+    public void stopPlay() {
+        MyMusicPlayerContral.getInstent(context).stopPlay();
+        seletionpos = -1;
+    }
+
+    /**
+     * 获取音频数据的地址
+     *
+     * @param position 需要获取地址的音频
+     * @return
+     */
+    private String getDataOfCursor(int position) {
+        Cursor mCursor = getCursor();
+        String filepath;
+        mCursor.moveToPosition(position);
+        if (showAudioFragment.isSysAudio) {
+
+            Uri uri = mRingtoneManager.getRingtoneUri(position);
+            filepath = uri.toString();
+        } else {
+            filepath = "file://" + mCursor.getString(mCursor
+                    .getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
+        }
+        return filepath;
+    }
+
+    private int getIDOfCursor(int position) {
+        Cursor mCursor = getCursor();
+        int id;
+        mCursor.moveToPosition(position);
+        if (showAudioFragment.isSysAudio) {
+            id = mCursor.getInt(RingtoneManager.ID_COLUMN_INDEX);
+        } else {
+            id = mCursor.getInt(mCursor
+                    .getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
+        }
+        return id;
+    }
+
+    private long getAlbumidOfCursor(int position) {
+        if (showAudioFragment.isSysAudio) {
+            return 0;
+        }
+        Cursor mCursor = getCursor();
+        mCursor.moveToPosition(position);
+        long albumid = mCursor.getLong(mCursor
+                .getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
+        return albumid;
+    }
+
+    private String getTitleOfCursor(int position) {
+        Cursor mCursor = getCursor();
+        String title;
+        mCursor.moveToPosition(position);
+        if (showAudioFragment.isSysAudio) {
+            title = mCursor.getString(RingtoneManager.TITLE_COLUMN_INDEX);
+        } else {
+            title = mCursor.getString(mCursor
+                    .getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
+        }
+        return title;
+    }
 
     public final class ViewHolder {
         //本地音频

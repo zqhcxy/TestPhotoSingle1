@@ -1,79 +1,78 @@
 package com.example.testphoto.adapter;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.testphoto.R;
 import com.example.testphoto.fragment.ShowVideoFragment;
 import com.example.testphoto.model.MySparseBooleanArray;
 import com.example.testphoto.model.MyVideo;
 import com.example.testphoto.util.DensityUtil;
-import com.example.testphoto.util.SDCardImageLoader;
 import com.example.testphoto.util.ScreenUtils;
 import com.example.testphoto.views.SquareRelativeLayout;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class JieVideoListViewAdapter extends BaseAdapter {
-    private static final String SYSVIDEO = "MyVideo";
+public class JieVideoListViewAdapter extends CursorAdapter {
     private static final int SYSVIDEO_TYPE = 0;
     private static final int VIDEO_TYPE = 1;
-    private List<MyVideo> listVideos;
-    //    int local_postion = 0;
-//    boolean imageChage = false;
     private LayoutInflater mLayoutInflater;
-    private SDCardImageLoader loader;
     private RelativeLayout.LayoutParams layoutParams;
     private ShowVideoFragment showVideoFragment;
     private Context context;
+    private ArrayList<String> syslist;
 
-    public JieVideoListViewAdapter(Context context,
-                                   ShowVideoFragment showVideoFragment, List<MyVideo> listVideos) {
+    public JieVideoListViewAdapter(Context context, Cursor c, ShowVideoFragment showVideoFragment, ArrayList<String> list) {
+        super(context, c, true);
         this.context = context;
         mLayoutInflater = LayoutInflater.from(context);
-        this.listVideos = listVideos;
+        syslist = list;
         this.showVideoFragment = showVideoFragment;
-        loader = new SDCardImageLoader(context, ScreenUtils.getScreenW(),
-                ScreenUtils.getScreenH(), 2);
         int imgw = (ScreenUtils.getScreenW() - DensityUtil.dip2px(context, 4)) / 3;
         layoutParams = new RelativeLayout.LayoutParams(imgw, imgw);
     }
 
     @Override
     public int getCount() {
-        return listVideos.size();
+        Cursor cursor = getCursor();
+        return cursor.getCount() + syslist.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listVideos.get(position);
+        if (position <= syslist.size() - 1) {
+            return syslist.get(position);
+        } else {
+            return getDataOfCursor(position - syslist.size());
+        }
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return position - syslist.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        String filePath = listVideos.get(position).getPath();
-        if (filePath.equals(SYSVIDEO)) {
+        if (position <= syslist.size() - 1) {
             return SYSVIDEO_TYPE;
-        } else if (!filePath.equals(SYSVIDEO)) {//在优化
+        } else {
             return VIDEO_TYPE;
         }
-
-        return -1;
     }
 
     @Override
@@ -82,17 +81,15 @@ public class JieVideoListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
 
         final ViewHolder holder;
-        // final String filePath = listVideos.get(position).getPath();
-        final MyVideo myVideo = listVideos.get(position);
         int viewtype = getItemViewType(position);
         if (convertView == null) {
             holder = new ViewHolder();
             if (viewtype == VIDEO_TYPE) {
-                convertView = LayoutInflater.from(context).inflate(
+                convertView = mLayoutInflater.inflate(
                         R.layout.photo_wall_item, null);
                 holder.imageView = (ImageView) convertView
                         .findViewById(R.id.photo_wall_item_photo);
@@ -104,7 +101,7 @@ public class JieVideoListViewAdapter extends BaseAdapter {
                 holder.media_iv_ly = (SquareRelativeLayout) convertView.findViewById(R.id.media_iv_ly);
                 holder.video_ico.setVisibility(View.VISIBLE);
             } else if (viewtype == SYSVIDEO_TYPE) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.sysyem_media_item, null);
+                convertView = mLayoutInflater.inflate(R.layout.sysyem_media_item, null);
                 holder.sys_media_ly = (RelativeLayout) convertView.findViewById(R.id.sys_meida_ly);
                 holder.sys_media_tv = (TextView) convertView.findViewById(R.id.sys_media_tv);
             }
@@ -118,48 +115,57 @@ public class JieVideoListViewAdapter extends BaseAdapter {
             holder.sys_media_ly.setLayoutParams(layoutParams);
             holder.sys_media_ly.setVisibility(View.VISIBLE);
             holder.sys_media_tv.setText(R.string.video_corder);
-            Drawable drawable =convertView.getResources().getDrawable(R.drawable.ic_media_videocorder);
+            Drawable drawable = convertView.getResources().getDrawable(R.drawable.ic_media_videocorder);
             drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
             holder.sys_media_tv.setCompoundDrawables(null, drawable, null, null);
         } else if (viewtype == VIDEO_TYPE) {
+            final String videoPath = getDataOfCursor(position - syslist.size());
+            final int videoID = getVideoIDOfCursor(position - syslist.size());
+
             holder.imageView.setLayoutParams(layoutParams);
             holder.media_iv_ly.setVisibility(View.VISIBLE);
-            holder.checkBox.setChecked(MySparseBooleanArray.get(position));
-            holder.chackbox_ly.setTag(R.id.tag_first, position);
+            holder.checkBox.setChecked(MySparseBooleanArray.get(videoID));
+            holder.chackbox_ly.setTag(R.id.tag_first, videoID);
             holder.chackbox_ly.setTag(R.id.tag_second, holder.imageView);
             holder.chackbox_ly.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    if (holder.checkBox.isChecked()) {
-                        holder.checkBox.setChecked(false);
-                    } else {
-                        holder.checkBox.setChecked(true);
-                    }
-                    Integer position = (Integer) v.getTag(R.id.tag_first);
-                    MySparseBooleanArray.clearSelectionMap();
-                    MySparseBooleanArray.setSelectionData(position,
-                            holder.checkBox.isChecked(), myVideo.getPath());
-                    // 单选就不设置选中效果了
+                    boolean checkboxIscheck = holder.checkBox.isChecked();
+                    boolean isout =  showVideoFragment.buttomLy(getDataOfCursor(position - syslist.size()), checkboxIscheck);
+                    if (!isout) {
+                        if (checkboxIscheck) {
+                            holder.checkBox.setChecked(false);
+                        } else {
+                            holder.checkBox.setChecked(true);
+                        }
+                        Integer position = (Integer) v.getTag(R.id.tag_first);
+                        MySparseBooleanArray.clearSelectionMap();
+                        MySparseBooleanArray.setSelectionData(position,
+                                holder.checkBox.isChecked(), videoPath);
+                        // 单选就不设置选中效果了
 
-                    showVideoFragment.setConfirmEnable();
-                    notifyDataSetChanged();
-
-                    // 底部弹出区域
-                    boolean ischoice = showVideoFragment
-                            .isHaveChoice();
-                    if (ischoice) {
-                        showVideoFragment.showButtonLy();
-                    } else {
-                        showVideoFragment.hidButtonLy();
+                        showVideoFragment.setConfirmEnable();
+                        notifyDataSetChanged();
                     }
                 }
             });
-            loader.loadImageForVideo(4, myVideo.getId(),
-                    listVideos.get(position).getPath(), holder.imageView);// 压缩比要是太小，图片太大会闪烁。(第一个参数已经没用)
+            Glide.with(context).load(Uri.parse(videoPath))
+                    .placeholder(R.drawable.empty_photo).dontAnimate()
+                    .override(180, 180).into(holder.imageView);
 
         }
         return convertView;
+    }
+
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        return null;
+    }
+
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+
     }
 
 
@@ -167,6 +173,35 @@ public class JieVideoListViewAdapter extends BaseAdapter {
         long min = myVideo.getDuration() / 1000 / 60;
         long sec = myVideo.getDuration() / 1000 % 60;
 //        holder.time.setText(min + " : " + sec);
+    }
+
+
+    /**
+     * 获取视频的地址
+     *
+     * @param position
+     * @return
+     */
+    private String getDataOfCursor(int position) {
+        Cursor cursor = getCursor();
+        cursor.moveToPosition(position);
+        String filepath = cursor.getString(cursor
+                .getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+        return "file://" + filepath;
+    }
+
+    /**
+     * 获取视频的id
+     *
+     * @param position
+     * @return
+     */
+    private int getVideoIDOfCursor(int position) {
+        Cursor cursor = getCursor();
+        cursor.moveToPosition(position);
+        int id = cursor.getInt(cursor
+                .getColumnIndexOrThrow(MediaStore.Video.Media._ID));
+        return id;
     }
 
     public final class ViewHolder {

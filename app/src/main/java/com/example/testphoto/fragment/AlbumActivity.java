@@ -1,11 +1,12 @@
 package com.example.testphoto.fragment;
 
 import android.content.Intent;
-import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
@@ -13,7 +14,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewConfiguration;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +22,7 @@ import com.example.testphoto.R;
 import com.example.testphoto.adapter.FragmentViewPagerAdapter;
 import com.example.testphoto.model.ConfirmLocalFileInf;
 import com.example.testphoto.model.MySparseBooleanArray;
+import com.example.testphoto.views.StrokeTextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -35,16 +36,19 @@ import java.util.List;
 public class AlbumActivity extends FragmentActivity implements OnClickListener,
         OnPageChangeListener {
 
-    private static final int PHOTO_TYPE = 1;
-    private static final int VIDEO_TYPE = 0;
-    private static final int AUDIO_TYPE = 2;
+    public static final int FLODER=100;//某个目录
+    public static final int ALLPICTRUE=200;//全部图片
+
+    public static final int PHOTO_TYPE = 1;
+    public static final int VIDEO_TYPE = 0;
+    public static final int AUDIO_TYPE = 2;
     private boolean isAll = true;
     private boolean isFirst = true;
 
     //    private Button backBT;// 返回相册
     private ImageView bcakIV;
     private TextView titleTV;// 标题
-    private Button confirm;// 确定
+    private StrokeTextView confirm;// 确定
 
 
     private TextView album_all;//全部
@@ -79,6 +83,7 @@ public class AlbumActivity extends FragmentActivity implements OnClickListener,
 
     private boolean isSystemMusic = false;
     private int type;//当前显示界面的多媒体类型。
+    public boolean isHidButtomLy = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +100,7 @@ public class AlbumActivity extends FragmentActivity implements OnClickListener,
     private void initView() {
         titleTV = (TextView) findViewById(R.id.topbar_title_tv);
         bcakIV = (ImageView) findViewById(R.id.topbar_left_iv);
-        confirm = (Button) findViewById(R.id.topbar_right_btn);
+        confirm = (StrokeTextView) findViewById(R.id.topbar_right_btn);
         title_ly = (LinearLayout) findViewById(R.id.title_ly);
         confirm.setText(R.string.main_confirm);
 //		backBT.setText(R.string.main_back);
@@ -126,11 +131,12 @@ public class AlbumActivity extends FragmentActivity implements OnClickListener,
     private void initData() {
         Intent intent = getIntent();
         type = intent.getIntExtra("type", PHOTO_TYPE);
+        isHidButtomLy = intent.getBooleanExtra("is_hid", false);
 
-        mTabs = new ArrayList<Fragment>();
-        mTabIndicator = new ArrayList<TextView>();
-        photoAlbumFragment = new PhotoAlbumFragment(type);
-
+        mTabs = new ArrayList<>();
+        mTabIndicator = new ArrayList<>();
+        photoAlbumFragment = new PhotoAlbumFragment();
+        photoAlbumFragment.setType(type);
         if (type == PHOTO_TYPE) {
             titleTV.setText(R.string.select_image);
             showAllPhotoFragment = new ShowAllPhotoFragment();
@@ -201,7 +207,7 @@ public class AlbumActivity extends FragmentActivity implements OnClickListener,
      * @param path
      */
     public void setChangView(int posotion, int code, String path) {
-        if (code == 100) {// 非显示全部
+        if (code == FLODER) {// 非显示全部
             isAll = false;
             isFirst = false;
         }
@@ -234,8 +240,11 @@ public class AlbumActivity extends FragmentActivity implements OnClickListener,
         setGroupTitleColor(position);
 //        mTabIndicator.get(position).setBackgroundColor(
 //                getResources().getColor(R.color.blue2_bg));
-        mTabIndicator.get(position).setBackgroundColor(Color.parseColor("#aeddff"));
-        mTabIndicator.get(position).setAlpha(1.0f);
+        mTabIndicator.get(position).setBackgroundColor(ContextCompat.getColor(this, R.color.white));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {//api大于11就执行
+            mTabIndicator.get(position).setAlpha(1.0f);
+        }
+//        mTabIndicator.get(position).setTextColor(ContextCompat.getColor(this, R.color.white));
         mViewPager.setCurrentItem(position, true);
     }
 
@@ -259,7 +268,11 @@ public class AlbumActivity extends FragmentActivity implements OnClickListener,
      */
     private void resetOtherTabs() {
         for (int i = 0; i < mTabIndicator.size(); i++) {
-            mTabIndicator.get(i).setAlpha(0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {//api大于11就执行
+                mTabIndicator.get(i).setAlpha(0);
+            }else{
+                mTabIndicator.get(i).setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
+            }
         }
     }
 
@@ -281,18 +294,28 @@ public class AlbumActivity extends FragmentActivity implements OnClickListener,
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int arg2) {
-        if (positionOffset > 0) {
-            TextView left = mTabIndicator.get(position);
-            TextView right = mTabIndicator.get(position + 1);
-            left.setAlpha(1 - positionOffset);
-            right.setAlpha(positionOffset);
-        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {//api大于11就执行
+            if (positionOffset > 0) {
+                TextView left = mTabIndicator.get(position);
+                TextView right = mTabIndicator.get(position + 1);
 
+                left.setAlpha(1 - positionOffset);
+                right.setAlpha(positionOffset);
+
+                left.setTextColor(ContextCompat.getColor(this,R.color.medial_tabtitle_col));
+                right.setTextColor(ContextCompat.getColor(this, R.color.white));
+            }
+        }
     }
 
     @Override
     public void onPageSelected(int arg0) {
-        setGroupTitleColor(arg0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {//api大于11就执行
+            setGroupTitleColor(arg0);
+        }else{
+            resetOtherTabs();
+            setSelectView(arg0);
+        }
         if (arg0 == 1) {// 文件夹
             confirm.setVisibility(View.GONE);
             setAllPhotoTitle("");
@@ -304,7 +327,7 @@ public class AlbumActivity extends FragmentActivity implements OnClickListener,
             if (isAll) {// 全部
                 if (!isFirst) {
                     showTabHost();
-                    setChangView(0, 200, null);
+                    setChangView(0, ALLPICTRUE, null);
                     isFirst = true;
                 }
             } else {
@@ -325,7 +348,7 @@ public class AlbumActivity extends FragmentActivity implements OnClickListener,
             // 看具体情况需不需要，系统铃声是否需要返回到全部界面
             if (isSystemMusic) {
                 showTabHost();
-                setChangView(0, 200, null);
+                setChangView(0, ALLPICTRUE, null);
                 setAllPhotoTitle("");
                 isFirst = true;
             } else {// 返回的是文件夹列表界面
@@ -367,15 +390,12 @@ public class AlbumActivity extends FragmentActivity implements OnClickListener,
      */
     public void setConfirmBt(int size) {
         if (size > 0) {
-            confirm.setAlpha(1f);
-
             confirm.setEnabled(true);
-//            confirm.setVisibility(View.VISIBLE);
+            confirm.setEnabled(true);
 
         } else {
-            confirm.setAlpha(0.5f);
             confirm.setEnabled(false);
-//            confirm.setVisibility(View.GONE);
+            confirm.setEnabled(false);
         }
     }
 
@@ -393,5 +413,12 @@ public class AlbumActivity extends FragmentActivity implements OnClickListener,
     private void hidTabHost() {
         if (title_ly.getVisibility() == View.VISIBLE)
             title_ly.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (showAudioFragment != null)
+            showAudioFragment.clear();
+        super.onDestroy();
     }
 }

@@ -1,65 +1,75 @@
 package com.example.testphoto.model;
 
-import java.util.List;
-
 /**
  * 相册对象
  */
 public class PhotoAlbumLVItem {
-	private String pathName;
-	private int fileCount;
-	private String firstImagePath;
+    private String pathName;
+    private int fileCount;
+    private String firstImagePath;
+    private String folderName;
 
-	public PhotoAlbumLVItem(String pathName, int fileCount,
-			String firstImagePath) {
-		this.pathName = pathName;
-		this.fileCount = fileCount;
-		this.firstImagePath = firstImagePath;
-	}
+    public PhotoAlbumLVItem(){
 
-	public String getPathName() {
-		return pathName;
-	}
+    }
+    public PhotoAlbumLVItem(String pathName, int fileCount,
+                            String firstImagePath) {
+        this.pathName = pathName;
+        this.fileCount = fileCount;
+        this.firstImagePath = firstImagePath;
+    }
 
-	public void setPathName(String pathName) {
-		this.pathName = pathName;
-	}
+    public String getFolderName() {
+        return folderName;
+    }
 
-	public int getFileCount() {
-		return fileCount;
-	}
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
+    }
 
-	public void setFileCount(int fileCount) {
-		this.fileCount = fileCount;
-	}
+    public String getPathName() {
+        return pathName;
+    }
 
-	public String getFirstImagePath() {
-		return firstImagePath;
-	}
+    public void setPathName(String pathName) {
+        this.pathName = pathName;
+    }
 
-	public void setFirstImagePath(String firstImagePath) {
-		this.firstImagePath = firstImagePath;
-	}
+    public int getFileCount() {
+        return fileCount;
+    }
 
-	// @Override
-	// public int hashCode() {
-	// return pathName.hashCode();
-	// }
-	//
-	// @Override
-	// public boolean equals(Object o) {
-	// if (o instanceof SelectImgGVItem){
-	// SelectImgGVItem other = (SelectImgGVItem) o;
-	// return this.pathName.equals(other.pathName);
-	// }
-	//
-	// return false;
-	// }
+    public void setFileCount(int fileCount) {
+        this.fileCount = fileCount;
+    }
 
-	@Override
-	public String toString() {
-		return "SelectImgGVItem{" + "pathName='" + pathName + '\''
-				+ ", fileCount=" + fileCount + ", firstImagePath='"
-				+ firstImagePath + '\'' + '}';
-	}
+    public String getFirstImagePath() {
+        return firstImagePath;
+    }
+
+    public void setFirstImagePath(String firstImagePath) {
+        this.firstImagePath = firstImagePath;
+    }
+
+    // @Override
+    // public int hashCode() {
+    // return pathName.hashCode();
+    // }
+    //
+    // @Override
+    // public boolean equals(Object o) {
+    // if (o instanceof SelectImgGVItem){
+    // SelectImgGVItem other = (SelectImgGVItem) o;
+    // return this.pathName.equals(other.pathName);
+    // }
+    //
+    // return false;
+    // }
+
+    @Override
+    public String toString() {
+        return "SelectImgGVItem{" + "pathName='" + pathName + '\''
+                + ", fileCount=" + fileCount + ", firstImagePath='"
+                + firstImagePath + '\'' + '}';
+    }
 }

@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -19,6 +18,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.testphoto.R;
+import com.example.testphoto.views.StrokeTextView;
 
 import java.io.File;
 
@@ -33,19 +33,19 @@ public class MsgFragmentActivity extends FragmentActivity implements OnClickList
     private FragmentManager fragmentManager;
     private int viewCode = 0;//当前显示的是哪个界面
 
-    public static final int PHOTO_REQUST = 0x000003;// 选中的图片的回调
-    public static final int AUDIO_REQUST = 0x000004;// 预览音频的回调
-    public static final int VIDEO_REQUST = 0x000005;// 预览视频的回调
-    private static final int PHOTO_TYPE = 100;
-    private static final int AUDIO_TYPE = 101;
-    private static final int VIDEO_TYPE = 102;
-    private static final int PHOTO_TYPE_CUT = 103;
+    public static final int PHOTO_REQUST = 100;// 选中的图片的回调
+    public static final int AUDIO_REQUST = 101;// 预览音频的回调
+    public static final int VIDEO_REQUST = 102;// 预览视频的回调
+    public static final int PHOTO_TYPE_CUT = 103;
+//    private static final int PHOTO_TYPE = 100;
+//    private static final int AUDIO_TYPE = 101;
+//    private static final int VIDEO_TYPE = 102;
 
 
     //    private Button backBT;// 返回
 //    private TextView titleTV;// 标题
     private ImageView bcakIV;
-    private Button sendMsg;// 发送
+    private StrokeTextView sendMsg;// 发送
     private LinearLayout topbar_shadow;//标题底部阴影
 
 
@@ -63,7 +63,7 @@ public class MsgFragmentActivity extends FragmentActivity implements OnClickList
 //        titleTV = (TextView) findViewById(R.id.topbar_title_tv);
         topbar_shadow = (LinearLayout) findViewById(R.id.topbar_shadow);
         bcakIV = (ImageView) findViewById(R.id.topbar_left_iv);
-        sendMsg = (Button) findViewById(R.id.topbar_right_btn);
+        sendMsg = (StrokeTextView) findViewById(R.id.topbar_right_btn);
         sendMsg.setText(R.string.main_confirm);
         bcakIV.setVisibility(View.VISIBLE);
         topbar_shadow.setVisibility(View.VISIBLE);
@@ -134,8 +134,8 @@ public class MsgFragmentActivity extends FragmentActivity implements OnClickList
      * @param img
      */
     public void glidePhoto(int code, String editphoto, File file, ImageView img) {
-        if (code != AUDIO_TYPE && code != PHOTO_TYPE_CUT) {
-            Glide.with(this).load(file).placeholder(R.drawable.empty_photo).centerCrop().override(80, 80).into(img);
+        if (code != AUDIO_REQUST && code != PHOTO_TYPE_CUT) {
+            Glide.with(this).load(file).placeholder(R.drawable.empty_photo).centerCrop().override(180, 180).into(img);
         } else if (code == PHOTO_TYPE_CUT) {
             final File file1 = new File(editphoto);
             Glide.with(this).load(new File(editphoto)).listener(new RequestListener<File, GlideDrawable>() {
@@ -149,7 +149,7 @@ public class MsgFragmentActivity extends FragmentActivity implements OnClickList
                     file1.delete();
                     return false;
                 }
-            }).placeholder(R.drawable.empty_photo).centerCrop().override(80, 80).into(img);
+            }).placeholder(R.drawable.empty_photo).centerCrop().override(180, 180).into(img);
         }
     }
 
@@ -204,16 +204,10 @@ public class MsgFragmentActivity extends FragmentActivity implements OnClickList
                 return;
             }
         }
-        switch (requestCode) {
-            case PHOTO_REQUST:
-            case AUDIO_REQUST:
-            case VIDEO_REQUST:
-                if (viewCode == 0) {
-                    msgFragemnt.onNewIntent(data);
-                } else if (viewCode == 1) {
-                    fullEditFragment.onNewIntent(data);
-                }
-                break;
+        if (viewCode == 0) {
+            msgFragemnt.onNewIntent(data, requestCode);
+        } else if (viewCode == 1) {
+            fullEditFragment.onNewIntent(data, requestCode);
         }
     }
 
@@ -221,7 +215,7 @@ public class MsgFragmentActivity extends FragmentActivity implements OnClickList
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         msgFragemnt.initViewPage();
-        if(fullEditFragment!=null){
+        if (fullEditFragment != null) {
             fullEditFragment.initViewPage();
         }
     }

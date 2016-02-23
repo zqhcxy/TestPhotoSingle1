@@ -2,10 +2,13 @@ package com.example.testphoto.fragment;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +23,6 @@ import com.example.testphoto.adapter.MyAudioAdapter;
 import com.example.testphoto.model.ConfirmLocalFileInf;
 import com.example.testphoto.model.MyAudio;
 import com.example.testphoto.model.MySparseBooleanArray;
-import com.example.testphoto.util.GetLocalFile;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,7 +37,9 @@ import java.util.List;
 public class ShowAudioFragment extends Fragment implements
         ConfirmLocalFileInf {
     private GridView audio_show;
-    private List<MyAudio> videos;
+    //    private List<MyAudio> videos;
+    private List<String> syslist;
+    private Cursor mCursor;
     private MyAudioAdapter adapter;
     private TextView filetip_button_ly;//文件过大底部提示窗
 
@@ -46,6 +50,8 @@ public class ShowAudioFragment extends Fragment implements
     private String currentFolder = null;
 
     private static final int CASE_AUDIO = 0x000003;// 调用摄像机的回调。
+    public boolean isSysAudio = false;
+    private RingtoneManager ringtonemanager;
 
 
     @Override
@@ -67,24 +73,34 @@ public class ShowAudioFragment extends Fragment implements
 
 
     private void initData() {
-        videos = new ArrayList<>();
+//        videos = new ArrayList<>();
+        syslist = new ArrayList<>();
         addData();
         setConfirmEnable();
+        String result = getResources().getString(
+                R.string.limit_media1)
+                + "<u><font  color=\"#0b94f9\">"
+                + getResources().getString(
+                R.string.all_photo_hcmms) + "</font></u>" + getResources().getString(
+                R.string.limit_media2);
+        filetip_button_ly.setText(Html.fromHtml(result));
     }
 
     private void addData() {
-        MyAudio myAudio = new MyAudio();
-        myAudio.setItemType("MyAudio");
-        MyAudio myAudio1 = new MyAudio();
-        myAudio1.setItemType("SystemAudio");// 查看系统铃声
-        videos.add(myAudio);
-        videos.add(myAudio1);
-        List<MyAudio> list = GetLocalFile.getAllAudioPathsByFolder(
-                getActivity(), null);
-        if (list != null)
-            videos.addAll(list);
-
-        adapter = new MyAudioAdapter(getActivity(), this, videos);
+//        MyAudio myAudio = new MyAudio();
+//        myAudio.setItemType("MyAudio");
+//        MyAudio myAudio1 = new MyAudio();
+//        myAudio1.setItemType("SystemAudio");// 查看系统铃声
+//        videos.add(myAudio);
+//        videos.add(myAudio1);
+//        List<MyAudio> list = GetLocalFile.getAllAudioPathsByFolder(
+//                getActivity(), null);
+//        if (list != null)
+//            videos.addAll(list);
+        syslist.add("MyAudio");
+        syslist.add("SystemAudio");
+        mCursor = getCursor(null);
+        adapter = new MyAudioAdapter(getActivity(), mCursor, syslist, this);
         audio_show.setAdapter(adapter);
     }
 
@@ -94,18 +110,17 @@ public class ShowAudioFragment extends Fragment implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                MyAudio myAudio = (MyAudio) parent.getItemAtPosition(position);
-                if (myAudio.getItemType().equals("MyAudio")) {
+                String nameofItem = (String) parent.getItemAtPosition(position);
+                if (nameofItem.equals("MyAudio")) {
                     // 录音
                     getNewAudio();
-                } else if (myAudio.getItemType().equals("SystemAudio")) {// 调用系统铃声
+                } else if (nameofItem.equals("SystemAudio")) {// 调用系统铃声
 
-                    ((AlbumActivity) getActivity()).setChangView(0, 100,
+                    ((AlbumActivity) getActivity()).setChangView(0, AlbumActivity.FLODER,
                             "SystemMusic");
-                    ((AlbumActivity) getActivity()).setAllPhotoTitle("系统铃声");
+                    ((AlbumActivity) getActivity()).setAllPhotoTitle(getResources().getString(R.string.system_audio));
 
                 }
-
             }
         });
     }
@@ -124,9 +139,17 @@ public class ShowAudioFragment extends Fragment implements
         }
         ArrayList<MyAudio> selectedImageList = new ArrayList<>();
 
-        for (int i = 0; i < videos.size(); i++) {
-            if (map.get(i)) {
-                selectedImageList.add(videos.get(i));
+        int size = mCursor.getCount();
+        for (int i = 0; i < size; i++) {
+            int id = getIDOfCursor(i);
+            if (map.get(id)) {
+                String filepath = getDataOfCursor(i);
+                MyAudio myAudio = new MyAudio();
+                myAudio.setPath(filepath);
+                myAudio.setAlbumid(getAlbumidOfCursor(i));
+                myAudio.setId(id);
+                myAudio.setTitle(getTitleOfCursor(i));
+                selectedImageList.add(myAudio);
             }
         }
         return selectedImageList;
@@ -152,25 +175,33 @@ public class ShowAudioFragment extends Fragment implements
         getActivity().overridePendingTransition(R.anim.in_from_right,
                 R.anim.out_from_left);
 
-        if (code == 100) {
+        if (code == AlbumActivity.FLODER) {
             // 某个音频目录
             // if (isLatest
             // || (folderPath != null && !folderPath.equals(currentFolder))) {
             if (folderPath != null) {
                 if (folderPath.equals("SystemMusic")) {// 系统铃声
-                    videos.clear();
+                    isSysAudio = true;
+                    syslist.clear();
                     MySparseBooleanArray.clearSelectionMap();
-                    videos.addAll(getRingtoneList(RingtoneManager.TYPE_RINGTONE));
-                    adapter.notifyDataSetChanged();
+                    if (mCursor != null) {
+                        mCursor.close();
+                        mCursor = null;
+                    }
+                    mCursor = getRingtoneList(RingtoneManager.TYPE_RINGTONE);
+                    adapter.setRingtoneList(ringtonemanager);
+                    adapter.changeCursor(mCursor);
                 } else {
+                    isSysAudio = false;
                     currentFolder = folderPath;
-                    updateView(100, currentFolder);
+                    updateView(AlbumActivity.FLODER, currentFolder);
                 }
             }
-        } else if (code == 200) {
+        } else if (code == AlbumActivity.ALLPICTRUE) {
+            isSysAudio = false;
             // “全部音频”
             // // if (!isLatest) {
-            updateView(200, null);
+            updateView(AlbumActivity.ALLPICTRUE, null);
             // isLatest = true;
             // }
         }
@@ -180,18 +211,20 @@ public class ShowAudioFragment extends Fragment implements
      * 根据音频所属文件夹路径，刷新页面
      */
     private void updateView(int code, String folderPath) {
-        videos.clear();
         MySparseBooleanArray.clearSelectionMap();
-        adapter.notifyDataSetChanged();
         setConfirmEnable();
-        if (code == 100) { // 某个视频库
-            videos.addAll(GetLocalFile.getAllAudioPathsByFolder(getActivity(),
-                    folderPath));
-        } else if (code == 200) { // 全部视频
-            addData();
+        if (code == AlbumActivity.FLODER) { // 某个视频库
+            syslist.clear();
+            mCursor = getCursor(folderPath);
+//            videos.addAll(GetLocalFile.getAllAudioPathsByFolder(getActivity(),
+//                    folderPath));
+        } else if (code == AlbumActivity.ALLPICTRUE) { // 全部视频
+            mCursor = getCursor(null);
+            syslist.add("MyAudio");
+            syslist.add("SystemAudio");
         }
-        adapter.notifyDataSetChanged();
-        if (videos.size() > 0) {
+        adapter.changeCursor(mCursor);
+        if (mCursor.getCount() > 0) {
             // 滚动至顶部
             audio_show.smoothScrollToPosition(0);
         }
@@ -223,8 +256,7 @@ public class ShowAudioFragment extends Fragment implements
         intent.setClassName("com.android.soundrecorder",
                 "com.android.soundrecorder.SoundRecorder");
         startActivityForResult(intent, CASE_AUDIO);
-        // Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        // startActivityForResult(intent, CASE_AUDIO);
+//        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, Long.parseLong(String.valueOf(sizeLimit)));// 现在大小
     }
 
     /**
@@ -243,6 +275,7 @@ public class ShowAudioFragment extends Fragment implements
     public void onPause() {
         super.onPause();
         adapter.stopPlay();
+        adapter.notifyDataSetChanged();
     }
 
 
@@ -257,66 +290,33 @@ public class ShowAudioFragment extends Fragment implements
      * @param type
      * @return
      */
-    public List<MyAudio> getRingtoneList(int type) {
+    public Cursor getRingtoneList(int type) {
 
-        List<MyAudio> audios = new ArrayList<MyAudio>();
+//        List<MyAudio> audios = new ArrayList<MyAudio>();
 
-        RingtoneManager manager = new RingtoneManager(getActivity());
+        ringtonemanager = new RingtoneManager(getActivity());
 
-        manager.setType(type);
+        ringtonemanager.setType(type);
+        Cursor cursor = ringtonemanager.getCursor();
+//        Cursor cursor = manager.getCursor();
+//
+//        int count = cursor.getCount();
+//        for (int i = 0; i < count; i++) {
+//            MyAudio myAudio = new MyAudio();
+//
+//            String title = cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX);
+//            myAudio.setTitle(title);
+//            // myAudio.setRingtone(manager.getRingtone(i));// 这个对象可以直接播放
+//            Uri path = manager.getRingtoneUri(i);
+//            myAudio.setPath(path.toString());
+//            myAudio.setItemType("Audio");
+//            audios.add(myAudio);
+//        }
 
-        Cursor cursor = manager.getCursor();
-
-        int count = cursor.getCount();
-        for (int i = 0; i < count; i++) {
-            MyAudio myAudio = new MyAudio();
-
-            String title = cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX);
-            myAudio.setTitle(title);
-            // myAudio.setRingtone(manager.getRingtone(i));// 这个对象可以直接播放
-            Uri path = manager.getRingtoneUri(i);
-            myAudio.setPath(path.toString());
-            myAudio.setItemType("Audio");
-            audios.add(myAudio);
-        }
-
-        return audios;
-
-    }
-
-
-    public String getRingtoneUriPath(int type, int pos, String def) {
-
-        RingtoneManager manager = new RingtoneManager(getActivity());
-
-        manager.setType(type);
-
-        Uri uri = manager.getRingtoneUri(pos);
-
-        return uri == null ? def : uri.toString();
+        return cursor;
 
     }
 
-
-    /**
-     * 判断所选文件是否大于可发送大小，是的话就底部弹窗提示
-     * @return 是否弹窗
-     */
-    public boolean isHaveChoice() {
-        //TODO 这里现在只是判断是否选择文件，是的话就弹窗。还需要一个判断是否大于规定大小文件。
-        SparseBooleanArray map = MySparseBooleanArray.getSelectionMap();
-        int size = videos.size();
-        if (size == 0) {
-            return false;
-        }
-
-        for (int i = 0; i < size; i++) {
-            if (map.get(i)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public void showButtonLy() {
         if (filetip_button_ly.getVisibility() == View.GONE) {
@@ -330,4 +330,114 @@ public class ShowAudioFragment extends Fragment implements
         }
     }
 
+    public String getRealPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = {MediaStore.Audio.Media.DATA};
+        Cursor cursor = null;
+        try {
+            cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+                res = cursor.getString(column_index);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+                cursor = null;
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * 获取音频数据
+     *
+     * @param folderPath 指定路径，没有就获取全部音频数据
+     * @return
+     */
+    private Cursor getCursor(String folderPath) {
+        Uri mAudioUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;// Uri
+        String orderBy = MediaStore.Audio.Media.DATE_MODIFIED;
+        String selection = null;
+
+        if (folderPath != null) {// 查找特定路径下的数据
+            selection = MediaStore.Audio.Media.DATA + " like " + DatabaseUtils.sqlEscapeString(folderPath + '%');
+
+
+        }
+        Cursor cursor = getActivity().getContentResolver().query(mAudioUri, null,
+                selection, null, orderBy + " desc");
+        return cursor;
+    }
+
+    /**
+     * 获取音频数据的地址
+     *
+     * @param position 需要获取地址的音频
+     * @return
+     */
+    private String getDataOfCursor(int position) {
+        String filepath;
+        mCursor.moveToPosition(position);
+        if (isSysAudio) {
+            Uri uri = ringtonemanager.getRingtoneUri(position);
+            filepath = uri.toString();
+        } else {
+            filepath = "file://" + mCursor.getString(mCursor
+                    .getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
+        }
+        return filepath;
+
+    }
+
+    private int getIDOfCursor(int position) {
+        int id;
+        mCursor.moveToPosition(position);
+        if (isSysAudio) {
+            id = mCursor.getInt(RingtoneManager.ID_COLUMN_INDEX);
+        } else {
+            id = mCursor.getInt(mCursor
+                    .getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
+        }
+        return id;
+    }
+
+    private long getAlbumidOfCursor(int position) {
+        if (isSysAudio) {
+            return 0;
+        }
+        mCursor.moveToPosition(position);
+        long albumid = mCursor.getLong(mCursor
+                .getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
+        return albumid;
+    }
+
+    private String getTitleOfCursor(int position) {
+        String title;
+        mCursor.moveToPosition(position);
+        if (isSysAudio) {
+            title = mCursor.getString(RingtoneManager.TITLE_COLUMN_INDEX);
+        } else {
+            title = mCursor.getString(mCursor
+                    .getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
+        }
+        return title;
+    }
+
+
+    /**
+     * 因为读取系统铃声方法导致Cursor被activity管理，所以节面finish（）要先清空cursor。
+     */
+    public void clear() {
+        if (adapter != null)
+            adapter = null;
+        audio_show.setAdapter(null);
+        if (mCursor != null) {
+            mCursor.close();
+            mCursor = null;
+        }
+    }
 }

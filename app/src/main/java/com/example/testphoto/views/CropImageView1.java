@@ -268,21 +268,22 @@ public class CropImageView1 extends ImageView {
         // isFirst的目的是下面对mDrawableSrc和mDrawableFloat只初始化一次，
         // 之后的变化是根据touch事件来变化的，而不是每次执行重新对mDrawableSrc和mDrawableFloat进行设置
         if (isFrist) {
-            oriRationWH = ((float) mDrawable.getIntrinsicWidth())
-                    / ((float) mDrawable.getIntrinsicHeight());
+            //这里这段会导致整个图片全屏显示。
+//            oriRationWH = ((float) mDrawable.getIntrinsicWidth())
+//                    / ((float) mDrawable.getIntrinsicHeight());
+//
+//            final float scale = mContext.getResources().getDisplayMetrics().density;
+//            int w = Math.min(getWidth(), (int) (mDrawable.getIntrinsicWidth()
+//                    * scale + 0.5f));
+//            int h = (int) (w / oriRationWH);
+//
+//            int left = (getWidth() - w) / 2;
+//            int top = (getHeight() - h) / 2;
+//            int right = left + w;
+//            int bottom = top + h;
 
-            final float scale = mContext.getResources().getDisplayMetrics().density;
-            int w = Math.min(getWidth(), (int) (mDrawable.getIntrinsicWidth()
-                    * scale + 0.5f));
-            int h = (int) (w / oriRationWH);
-
-            int left = (getWidth() - w) / 2;
-            int top = (getHeight() - h) / 2;
-            int right = left + w;
-            int bottom = top + h;
-
-            mDrawableSrc.set(left, top, right, bottom);
-            mDrawableDst.set(mDrawableSrc);
+//            mDrawableSrc.set(left, top, right, bottom);
+//            mDrawableDst.set(mDrawableSrc);
 
             int floatWidth = dipTopx(mContext, cropWidth);
             int floatHeight = dipTopx(mContext, cropHeight);
@@ -301,7 +302,10 @@ public class CropImageView1 extends ImageView {
             int floatTop = (getHeight() - floatHeight) / 2;
             mDrawableFloat.set(floatLeft, floatTop, floatLeft + floatWidth,
                     floatTop + floatHeight);
-
+            //设置画的图片也是这个大小
+            mDrawableSrc.set(floatLeft, floatTop, floatLeft + floatWidth,
+                    floatTop + floatHeight);
+            mDrawableDst.set(mDrawableSrc);
             isFrist = false;
         }
 

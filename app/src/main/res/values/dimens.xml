@@ -4,7 +4,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-     <!-- 顶部 导航栏高度 -->
+    <!-- 顶部 导航栏高度 -->
     <dimen name="topbar_height">56dp</dimen>
 
     <!-- 应用边距尺寸 -->

@@ -11,11 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/world"
+        android:layout_below="@+id/ll_comm_topbar"
+        android:layout_above="@+id/share_buttomly"
         android:src="@drawable/ic_launcher" />
 
     <include layout="@layout/comm_topbar_ll" />
 
     <LinearLayout
+        android:id="@+id/share_buttomly"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"

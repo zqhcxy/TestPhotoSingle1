@@ -53,6 +53,8 @@
             android:configChanges="orientation|keyboardHidden|locale|screenSize|keyboard"
             android:label="@string/title_activity_share_video"
             android:screenOrientation="portrait" />
+        <activity android:name="com.example.testphoto.TestAblumActivity" >
+        </activity>
     </application>
 
 </manifest>

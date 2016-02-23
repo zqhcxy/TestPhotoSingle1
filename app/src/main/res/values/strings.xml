@@ -33,6 +33,11 @@
     <string name="audio_corder">录制音频</string>
     <string name="main_msg">信息</string>
     <string name="msg_limit">还可以输入140个字</string>
+    <string name="all_photo_compression">压缩图片（彩信）</string>
+    <string name="all_photo_hcmms">超级短信</string>
+    <string name="limit_media1">您选择的文件超出彩信规格，将转为</string>
+    <string name="limit_media2">发送给对方</string>
 
+    <string name="pref_prepare_look_title">预览</string>
 
 </resources>

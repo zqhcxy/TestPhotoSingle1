@@ -1,5 +1,6 @@
 package com.example.testphoto.util;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 
@@ -20,31 +21,29 @@ public class FileUtils {
 	public static String SDPATH = Environment.getExternalStorageDirectory()
 			+ "/.TestPhoto_local/";
 
-	public static String saveBitmap(Bitmap bm, String picName) {
-		try {
-			if (!isFileExist("")) {
-				File tempf = createSDDir("");
-			}
-			// File appDir = new File(SDPATH);
-			// if (!appDir.exists()) {
-			// appDir.mkdirs();
-			// }
+	public static String saveBitmap(Bitmap bm, String picName,Context mComtext) {
+        try {
+            CommonUtil.checkAndCreateDir(FileUtil.getCacheFilePath()+picName + ".jpeg", mComtext);
+            // File appDir = new File(SDPATH);
+            // if (!appDir.exists()) {
+            // appDir.mkdirs();
+            // }
 
-			File f = new File(SDPATH, picName + ".JPEG");
-			if (f.exists()) {
-				f.delete();
-			}
-			FileOutputStream out = new FileOutputStream(f);
-			bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
-			out.flush();
-			out.close();
-			return SDPATH + picName + ".JPEG";
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
+            File f = new File(FileUtil.getCacheFilePath(), picName + ".jpeg");
+            if (f.exists()) {
+                f.delete();
+            }
+            FileOutputStream out = new FileOutputStream(f);
+            bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+            return "file://"+FileUtil.getCacheFilePath() + picName + ".jpeg";
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
 	}
 
 	public static File createSDDir(String dirName) throws IOException {

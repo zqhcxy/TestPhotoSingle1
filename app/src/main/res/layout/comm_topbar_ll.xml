@@ -49,7 +49,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/topbar_textSize" />
 
-        <Button
+        <com.example.testphoto.views.StrokeTextView
             android:id="@+id/topbar_right_btn"
             android:layout_width="56dp"
             android:layout_height="32dp"

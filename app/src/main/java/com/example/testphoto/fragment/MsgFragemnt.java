@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -33,8 +34,9 @@ import com.example.testphoto.R;
 import com.example.testphoto.adapter.MyMenuAdapter;
 import com.example.testphoto.adapter.MyPageViewAdapter;
 import com.example.testphoto.model.MyAudio;
+import com.example.testphoto.util.CommonUtil;
 import com.example.testphoto.util.DensityUtil;
-import com.example.testphoto.util.MyMediaPlayerContral;
+import com.example.testphoto.util.MyMusicPlayerContral;
 import com.example.testphoto.util.ScreenUtils;
 import com.example.testphoto.views.MyMediaPlayerView;
 
@@ -45,9 +47,9 @@ import java.util.List;
 public class MsgFragemnt extends Fragment implements OnClickListener {
 
 
-    private static final int PHOTO_TYPE = 100;
-    private static final int AUDIO_TYPE = 101;
-    private static final int VIDEO_TYPE = 102;
+    //    private static final int PHOTO_TYPE = 100;
+//    private static final int AUDIO_TYPE = 101;
+//    private static final int VIDEO_TYPE = 102;
     //分别是截图与录制视频的返回，各不需要用glide进行获取缩略图
     private static final int PHOTO_TYPE_CUT = 103;
     private static final int MSG_EDITOR_TEXT_UPDATE = 10001;
@@ -77,8 +79,6 @@ public class MsgFragemnt extends Fragment implements OnClickListener {
     private LinearLayout button_menu_ly;//底部菜单
     private ViewPager msg_menu_vp;
 
-
-    private MyMediaPlayerContral myMediaPlayerContral;//音频播放控制器
 
     //选择的多媒体数据
     public int showType = -1;// 当前显示的是哪个多媒体类型的文件
@@ -158,69 +158,44 @@ public class MsgFragemnt extends Fragment implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-//            case R.id.localphoto_bt:
-//                Intent intent = new Intent(getActivity(), AlbumActivity.class);
-//                intent.putExtra("type", 1);
-//                getActivity().startActivityForResult(intent, ((MsgFragmentActivity) getActivity()).PHOTO_REQUST);
-//                hidMenuly();
-//                break;
             case R.id.menu_iv://打开与关闭底部菜单
                 showMenuIV(false);
 
                 if (button_menu_ly.getVisibility() == View.VISIBLE) {
-//                    button_menu_ly.startAnimation(AnimationUtils.loadAnimation(
-//                            getActivity(), R.anim.activity_translate_out));
                     button_menu_ly.setVisibility(View.GONE);
                 } else if (button_menu_ly.getVisibility() == View.GONE) {
                     showMenuIV(true);
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(msg_edit.getWindowToken(), 0);
                     button_menu_ly.setVisibility(View.VISIBLE);
-//                    button_menu_ly.startAnimation(AnimationUtils.loadAnimation(
-//                            getActivity(), R.anim.activity_translate_in));
                 }
                 break;
-//            case R.id.video_bt:
-//                Intent intent2 = new Intent(getActivity(), AlbumActivity.class);
-//                intent2.putExtra("type", 0);
-//                getActivity().startActivityForResult(intent2, ((MsgFragmentActivity) getActivity()).VIDEO_REQUST);
-//                hidMenuly();
-//                break;
-//            case R.id.audio_bt:
-//                Intent intent3 = new Intent(getActivity(), AlbumActivity.class);
-//                intent3.putExtra("type", 2);
-//                getActivity().startActivityForResult(intent3, ((MsgFragmentActivity) getActivity()).AUDIO_REQUST);
-//                hidMenuly();
-//                break;
             case R.id.media_thumbnail_iv://点击缩略图
-                if (showType == PHOTO_TYPE) {//图片的缩略图
-                    Intent intent4 = new Intent(getActivity(),
-                            GalleryActivity.class);
-                    ArrayList<String> imagePathList = new ArrayList<>();// 照片路径集合
-                    imagePathList.add(mMediaPath);
-                    intent4.putStringArrayListExtra("pathlist", imagePathList);
-                    intent4.putExtra("Type", "mainActivity");
-                    intent4.putExtra("compression", compression);
-                    getActivity().startActivityForResult(intent4, ((MsgFragmentActivity) getActivity()).PHOTO_REQUST);
-                } else if (showType == VIDEO_TYPE) {//视频的缩略图
-                    Intent intent5 = new Intent(Intent.ACTION_VIEW);
-                    intent5.setDataAndType(Uri.parse(mMediaPath), "video/*");
-                    startActivity(intent5);
-                }
+                setThumbnailOnclick();
+//                if (showType == MsgFragmentActivity.PHOTO_REQUST) {//图片的缩略图
+//                    Intent intent4 = new Intent(getActivity(),
+//                            GalleryActivity.class);
+//                    ArrayList<String> imagePathList = new ArrayList<>();// 照片路径集合
+//                    imagePathList.add(mMediaPath);
+//                    intent4.putStringArrayListExtra("pathlist", imagePathList);
+//                    intent4.putExtra("Type", "mainActivity");
+//                    intent4.putExtra("compression", compression);
+//                    getActivity().startActivityForResult(intent4, ((MsgFragmentActivity) getActivity()).PHOTO_REQUST);
+//                } else if (showType == MsgFragmentActivity.VIDEO_REQUST) {//视频的缩略图
+//                    Intent intent5 = new Intent(Intent.ACTION_VIEW);
+//                    intent5.setDataAndType(Uri.parse(mMediaPath), "video/*");
+//                    startActivity(intent5);
+//                }
                 break;
             case R.id.media_clear_iv://点击删除按钮
                 setDistroyMediaData();
                 break;
             case R.id.audio_thumbnail://播放音频
-                if (myMediaPlayerContral == null) {
-                    myMediaPlayerContral = new MyMediaPlayerContral();
-                }
-                myMediaPlayerContral.setMediaPlayerView(audio_thumbnail, myAudio.getPath(), 0);
+                MyMusicPlayerContral.getInstent(getActivity()).setMediaPlayerView(audio_thumbnail, Uri.parse(myAudio.getPath()), 0);
                 break;
             case R.id.full_edit_iv://全屏编辑
                 hidMenuly();
                 ((MsgFragmentActivity) getActivity()).stapOnclick(1);
-
 
                 break;
             default:
@@ -228,6 +203,39 @@ public class MsgFragemnt extends Fragment implements OnClickListener {
         }
 
     }
+
+    public void setThumbnailOnclick() {
+        if (showType == MsgFragmentActivity.PHOTO_REQUST) {//图片的缩略图
+            Intent intent4 = new Intent(getActivity(),
+                    GalleryActivity.class);
+            ArrayList<String> imagePathList = new ArrayList<>();// 照片路径集合
+
+            if (mMediaPath != null) {
+                Uri picuri = Uri.parse(mMediaPath);
+                File file = new File(picuri.getPath());
+                imagePathList.add(mMediaPath);
+                intent4.putExtra("pictitle", file.getName());
+                intent4.putStringArrayListExtra("pathlist", imagePathList);
+                intent4.putExtra("Type", "mainActivity");
+                intent4.putExtra("compression", compression);
+                startActivityForResult(intent4, MsgFragmentActivity.PHOTO_REQUST);
+            }
+        } else if (showType == MsgFragmentActivity.VIDEO_REQUST) {//视频的缩略图
+            try {
+                Intent intent5 = new Intent(Intent.ACTION_VIEW);
+                intent5.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent5.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                intent5.setDataAndType(Uri.parse(mMediaPath), "video/*");
+                if (CommonUtil.isAndroid40FirmwareVersion())
+                    intent5.putExtra(MediaStore.EXTRA_FINISH_ON_COMPLETION, false);
+                startActivity(intent5);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
 
     private void hidMenuly() {
         if (button_menu_ly.getVisibility() == View.VISIBLE) {
@@ -244,13 +252,8 @@ public class MsgFragemnt extends Fragment implements OnClickListener {
      *
      * @param intent
      */
-    public void onNewIntent(Intent intent) {
-        int code = intent.getIntExtra("code", -1);
-        if (code == -1) {
-            return;
-        }
-
-        if (code == PHOTO_TYPE) {//图片(是否统一传地址，截取图片那现在是发送的内存bitmap)
+    public void onNewIntent(Intent intent, int requestCode) {
+        if (requestCode == MsgFragmentActivity.PHOTO_REQUST) {//图片(是否统一传地址，截取图片那现在是发送的内存bitmap)
             ArrayList<String> paths = intent.getStringArrayListExtra("paths");
             String pic_path = null;
             compression = intent.getBooleanExtra("compression", false);
@@ -258,18 +261,50 @@ public class MsgFragemnt extends Fragment implements OnClickListener {
             if (paths != null && paths.size() > 0)
                 pic_path = paths.get(0);
             mEditPhoto = intent.getStringExtra("sendBitmap");
-            setShowPhotoData(pic_path);
-        } else if (code == AUDIO_TYPE) {// 音频
+            setattachment(MsgFragmentActivity.PHOTO_REQUST, pic_path);
+        } else if (requestCode == MsgFragmentActivity.AUDIO_REQUST) {// 音频
             myAudio = (MyAudio) intent.getSerializableExtra("MyAudio");
-            setShowAudioData();
-
-        } else if (code == VIDEO_TYPE) {// 视频
+            setattachment(MsgFragmentActivity.AUDIO_REQUST, myAudio.getPath());
+        } else if (requestCode == MsgFragmentActivity.VIDEO_REQUST) {// 视频
+            String video_path = null;
             ArrayList<String> paths = intent.getStringArrayListExtra("paths");
-            String path = paths.get(0);
-            setShowVideoData(path);
+            if (paths != null && paths.size() > 0)
+                video_path = paths.get(0);
+            setattachment(MsgFragmentActivity.VIDEO_REQUST, video_path);
         }
     }
 
+    /**
+     * 多媒体附件统一设置显示
+     *
+     * @param typecoe
+     * @param path
+     */
+    public void setattachment(int typecoe, String path) {
+        showType = typecoe;
+        mMediaPath = path;
+
+        if (typecoe == MsgFragmentActivity.PHOTO_REQUST) {
+            int type = MsgFragmentActivity.PHOTO_REQUST;
+            if (mEditPhoto != null) {//是否是截取图片-本地的没有删除
+                mMediaPath = mEditPhoto;
+                type = MsgFragmentActivity.PHOTO_TYPE_CUT;
+            }
+            setMediaDataShow(mMediaPath, type);
+        } else if (typecoe == MsgFragmentActivity.AUDIO_REQUST) {
+            File file = new File(path);
+            String title = file.getName();
+            media_show_ly.setVisibility(View.VISIBLE);
+            media_title_tv.setText(title);
+            audio_thumbnail.setTag(myAudio.getAlbumid());
+            audio_thumbnail.initMediaData(myAudio.getAlbumid(), myAudio.getId());
+            audio_thumbnail.setVisibility(View.VISIBLE);
+            media_thumbnail_iv.setVisibility(View.GONE);
+
+        } else if (typecoe == MsgFragmentActivity.VIDEO_REQUST) {
+            setMediaDataShow(mMediaPath, MsgFragmentActivity.VIDEO_REQUST);
+        }
+    }
 
     /**
      * 显示选择的多媒体文件
@@ -280,6 +315,9 @@ public class MsgFragemnt extends Fragment implements OnClickListener {
     private void setMediaDataShow(String path, int code) {
         audio_thumbnail.setVisibility(View.GONE);
         media_thumbnail_iv.setVisibility(View.VISIBLE);
+        if (path.startsWith("file://")) {
+            path = Uri.parse(path).getPath();
+        }
         File file = new File(path);
         String title = file.getName();
         media_show_ly.setVisibility(View.VISIBLE);
@@ -300,40 +338,10 @@ public class MsgFragemnt extends Fragment implements OnClickListener {
         myAudio = null;
         mEditPhoto = null;
         showType = -1;
-        if (myMediaPlayerContral != null) {
-            myMediaPlayerContral.stopPlay();
-        }
+        MyMusicPlayerContral.getInstent(getActivity()).stopPlay();
     }
 
 
-    public void setShowPhotoData(String pic_path) {
-        showType = PHOTO_TYPE;
-        mMediaPath = pic_path;
-        if (mEditPhoto != null) {//是否是截取图片-
-            setMediaDataShow(pic_path, PHOTO_TYPE_CUT);
-        } else {//正常图片地址--传递的是地址
-            setMediaDataShow(pic_path, PHOTO_TYPE);
-        }
-
-    }
-
-    public void setShowAudioData() {
-        showType = AUDIO_TYPE;
-        mMediaPath = myAudio.getPath();
-        setMediaDataShow(mMediaPath, AUDIO_TYPE);
-        //如果这里不需要封面的话就不要下面这一段
-        audio_thumbnail.initMediaData(myAudio.getAlbumid(), myAudio.getId());
-        audio_thumbnail.setVisibility(View.VISIBLE);
-        media_thumbnail_iv.setVisibility(View.GONE);
-
-    }
-
-    public void setShowVideoData(String path) {
-        showType = VIDEO_TYPE;
-        mMediaPath = path;
-        setMediaDataShow(path, VIDEO_TYPE);
-
-    }
 
     private final Handler mTextEditorHandler = new Handler() {
         @Override
@@ -481,17 +489,18 @@ public class MsgFragemnt extends Fragment implements OnClickListener {
                     switch (title) {
                         case "图片":
                             Intent intent = new Intent(getActivity(), AlbumActivity.class);
-                            intent.putExtra("type", 1);
+                            intent.putExtra("type", AlbumActivity.PHOTO_TYPE);
                             getActivity().startActivityForResult(intent, ((MsgFragmentActivity) getActivity()).PHOTO_REQUST);
                             hidMenuly();
                             break;
                         case "音频":
                             Intent intent3 = new Intent(getActivity(), AlbumActivity.class);
-                            intent3.putExtra("type", 2);
+                            intent3.putExtra("type", AlbumActivity.AUDIO_TYPE);
                             getActivity().startActivityForResult(intent3, ((MsgFragmentActivity) getActivity()).AUDIO_REQUST);
                             hidMenuly();
                             break;
                         case "名片":
+
                             break;
                         case "位置":
                             break;
@@ -501,7 +510,7 @@ public class MsgFragemnt extends Fragment implements OnClickListener {
                             break;
                         case "视频":
                             Intent intent2 = new Intent(getActivity(), AlbumActivity.class);
-                            intent2.putExtra("type", 0);
+                            intent2.putExtra("type", AlbumActivity.VIDEO_TYPE);
                             getActivity().startActivityForResult(intent2, ((MsgFragmentActivity) getActivity()).VIDEO_REQUST);
                             hidMenuly();
                             break;
@@ -563,9 +572,7 @@ public class MsgFragemnt extends Fragment implements OnClickListener {
     @Override
     public void onPause() {
         super.onPause();
-        if (myMediaPlayerContral != null) {
-            myMediaPlayerContral.stopPlay();
-        }
+        MyMusicPlayerContral.getInstent(getActivity()).stopPlay();
     }
 
     @Override

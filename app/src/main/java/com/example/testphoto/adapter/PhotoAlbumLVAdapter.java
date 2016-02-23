@@ -1,6 +1,7 @@
 package com.example.testphoto.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.testphoto.R;
+import com.example.testphoto.fragment.AlbumActivity;
 import com.example.testphoto.model.PhotoAlbumLVItem;
 import com.example.testphoto.util.DensityUtil;
-import com.example.testphoto.util.SDCardImageLoader;
 import com.example.testphoto.util.ScreenUtils;
 
 import java.io.File;
@@ -22,13 +24,13 @@ import java.util.ArrayList;
  * 选择相册页面,ListView的adapter Created by hanj on 14-10-14.
  */
 public class PhotoAlbumLVAdapter extends BaseAdapter {
-    private static final int PHOTO_TYPE = 1;
-    private static final int VIDEO_TYPE = 0;
-    private static final int AUDIO_TYPE = 2;
+//    private static final int PHOTO_TYPE = 1;
+//    private static final int VIDEO_TYPE = 0;
+//    private static final int AUDIO_TYPE = 2;
     private Context context;
     private ArrayList<PhotoAlbumLVItem> list;
 
-    private SDCardImageLoader loader;
+//    private SDCardImageLoader loader;
     RelativeLayout.LayoutParams layoutParams;
     private int type;
 
@@ -37,8 +39,8 @@ public class PhotoAlbumLVAdapter extends BaseAdapter {
         this.context = context;
         this.list = list;
         this.type = type;
-        loader = new SDCardImageLoader(context, ScreenUtils.getScreenW(),
-                ScreenUtils.getScreenH(), type);
+//        loader = new SDCardImageLoader(context, ScreenUtils.getScreenW(),
+//                ScreenUtils.getScreenH(), type);
         int imgw = (ScreenUtils.getScreenW() - DensityUtil.dip2px(context, 4)) / 3;
         layoutParams = new RelativeLayout.LayoutParams(imgw, imgw);
     }
@@ -64,7 +66,7 @@ public class PhotoAlbumLVAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             //这里并不是多布局共用，而是因为多个布局的adapter合在这里写，每次只会走一个类型。不会同时具备多个类型
-            if (type == AUDIO_TYPE) {// 音频(其实可以分出一个单独类和adapter，但是会增加代码量。)
+            if (type == AlbumActivity.AUDIO_TYPE) {// 音频(其实可以分出一个单独类和adapter，但是会增加代码量。)
                 convertView = LayoutInflater.from(context).inflate(
                         R.layout.audiofold_item, null);
                 holder.audio_fold_iv = (ImageView) convertView
@@ -88,7 +90,7 @@ public class PhotoAlbumLVAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        if (type == AUDIO_TYPE) {// 音频不需要图片
+        if (type == AlbumActivity.AUDIO_TYPE) {// 音频不需要图片
             holder.audio_fold_title.setTextColor(context.getResources()
                     .getColor(R.color.world));
             getPathNameToShowAudio(list.get(position), holder);
@@ -99,8 +101,16 @@ public class PhotoAlbumLVAdapter extends BaseAdapter {
             getPathNameToShowForPV(list.get(position),holder);
             // 图片（缩略图）
             String filePath = list.get(position).getFirstImagePath();
-            // holder.firstImageIV.setTag(filePath);
-            loader.loadImage(4, filePath, holder.firstImageIV);
+            Uri uri;
+            if(filePath.contains("file://")){
+                uri= Uri.parse(filePath);
+            }else{
+                uri= Uri.fromFile(new File(filePath));
+            }
+            Glide.with(context).load(uri)
+                    .placeholder(R.drawable.empty_photo).centerCrop()
+                    .override(180, 180).crossFade()
+                    .into(holder.firstImageIV);
         }
 
         return convertView;

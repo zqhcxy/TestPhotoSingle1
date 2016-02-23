@@ -25,11 +25,8 @@ import java.util.ArrayList;
 public class PhotoAlbumFragment extends Fragment {
     private GridView select_img_gv;
     private int type;// 视频还是图片
-    private static final int PHOTO_TYPE = 1;
-    private static final int VIDEO_TYPE = 0;
-    private static final int AUDIO_TYPE = 2;
 
-    public PhotoAlbumFragment(int type) {
+    public void setType(int type) {
         this.type = type;
     }
 
@@ -55,15 +52,19 @@ public class PhotoAlbumFragment extends Fragment {
         }
 
         final ArrayList<PhotoAlbumLVItem> list = new ArrayList<PhotoAlbumLVItem>();
-        if (type == PHOTO_TYPE) {
+        if (type == AlbumActivity.PHOTO_TYPE) {
             // 相册
             list.addAll(GetLocalFile
-                    .getImagePathsByContentProvider(getActivity()));
-        } else if (type == VIDEO_TYPE) {
+                    .getMediaAblum(getActivity(),GetLocalFile.IMAGES));
+//            list.addAll(GetLocalFile
+//                    .getImagePathsByContentProvider(getActivity()));
+        } else if (type == AlbumActivity.VIDEO_TYPE) {
             // 每个视频文件夹
             list.addAll(GetLocalFile
-                    .getVideoPathsByContentProvider(getActivity()));
-        } else if (type == AUDIO_TYPE) {// 音频
+                    .getMediaAblum(getActivity(), GetLocalFile.VIDEOS));
+//            list.addAll(GetLocalFile
+//                    .getVideoPathsByContentProvider(getActivity()));
+        } else if (type == AlbumActivity.AUDIO_TYPE) {// 音频
             // 每个视频文件夹
             list.addAll(GetLocalFile
                     .getAudioPathsByContentProvider(getActivity()));
@@ -83,7 +84,7 @@ public class PhotoAlbumFragment extends Fragment {
                                             int position, long id) {
 
                         String folderPath = list.get(position).getPathName();
-                        ((AlbumActivity) getActivity()).setChangView(0, 100,
+                        ((AlbumActivity) getActivity()).setChangView(0, AlbumActivity.FLODER,
                                 folderPath);
                         int lastSeparator = folderPath
                                 .lastIndexOf(File.separator);

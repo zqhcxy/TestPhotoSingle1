@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
@@ -172,16 +173,16 @@ public class SDCardImageLoader {
                         });
                     } else if (type == 3) {// 本地音频封面---(已废弃)
 
-                        final Bitmap bmp = GetLocalFile.getArtwork(context, id,
-                                albumid, true, true);
-//                        SaveBitmap.saveBitmap("audio"+albumid+"-"+id + ".png", bmp);
-
-                        imageCache.put(filePath, bmp);
-                        handler.post(new Runnable() {
-                            public void run() {
-                                callback.imageLoaded(imageView, bmp, filePath);
-                            }
-                        });
+//                        final Bitmap bmp = GetLocalFile.getArtwork(context, id,
+//                                albumid, true, true);
+////                        SaveBitmap.saveBitmap("audio"+albumid+"-"+id + ".png", bmp);
+//
+//                        imageCache.put(filePath, bmp);
+//                        handler.post(new Runnable() {
+//                            public void run() {
+//                                callback.imageLoaded(imageView, bmp, filePath);
+//                            }
+//                        });
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -257,7 +258,7 @@ public class SDCardImageLoader {
     public void loadImageForVideo(int smallRate, long id,
                                   final String filePath, final ImageView imageView) {
 
-        Glide.with(context).load(new File(filePath))
+        Glide.with(context).load(Uri.parse(filePath))
                 .placeholder(R.drawable.empty_photo)
                 .override(120, 120).into(imageView);
 

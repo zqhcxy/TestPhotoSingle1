@@ -29,7 +29,7 @@ import com.example.testphoto.adapter.MyMenuAdapter;
 import com.example.testphoto.adapter.MyPageViewAdapter;
 import com.example.testphoto.model.MyAudio;
 import com.example.testphoto.util.DensityUtil;
-import com.example.testphoto.util.MyMediaPlayerContral;
+import com.example.testphoto.util.MyMusicPlayerContral;
 import com.example.testphoto.util.ScreenUtils;
 import com.example.testphoto.views.MyMediaPlayerView;
 
@@ -41,10 +41,10 @@ import java.util.List;
  * 全屏编辑模式界面
  */
 public class FullEditFragment extends Fragment implements View.OnClickListener {
-    private static final int PHOTO_TYPE = 100;
-    private static final int AUDIO_TYPE = 101;
-    private static final int VIDEO_TYPE = 102;
-    private static final int PHOTO_TYPE_CUT = 103;
+//    private static final int PHOTO_TYPE = 100;
+//    private static final int AUDIO_TYPE = 101;
+//    private static final int VIDEO_TYPE = 102;
+//    private static final int PHOTO_TYPE_CUT = 103;
     //    private static final int VIDEO_SYS_TYPE = 104;
 
     private static final int LANDSCAPE = 1001;
@@ -72,10 +72,11 @@ public class FullEditFragment extends Fragment implements View.OnClickListener {
 
 
     private String mMediaPath;//选中的多媒体文件地址
-    private MyMediaPlayerContral myMediaPlayerContral;//音频播放控制器
     private MsgFragemnt msgFragemnt;
-    private boolean compression;
     private List<View> views;
+    public MyAudio myAudio;
+    public boolean compression;//是否发送原图
+    public String mEditPhoto;//编辑过的图片，显示完要删除
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -257,15 +258,16 @@ public class FullEditFragment extends Fragment implements View.OnClickListener {
         String msg = msgFragemnt.msg_edit.getText().toString();
         fulledit_msg_et.setText(msg);
         switch (msgFragemnt.showType) {
-            case PHOTO_TYPE:
+            case MsgFragmentActivity.PHOTO_REQUST:
                 compression = msgFragemnt.compression;
-                setShowPhotoData(msgFragemnt.mEditPhoto, msgFragemnt.mMediaPath);
+                mEditPhoto = msgFragemnt.mEditPhoto;
+                setattachment(MsgFragmentActivity.PHOTO_REQUST, msgFragemnt.mMediaPath);
                 break;
-            case AUDIO_TYPE:
-                setShowAudioData(msgFragemnt.myAudio);
+            case MsgFragmentActivity.AUDIO_REQUST:
+                setattachment(MsgFragmentActivity.AUDIO_REQUST, msgFragemnt.myAudio.getPath());
                 break;
-            case VIDEO_TYPE:
-                setShowVideoData(msgFragemnt.mMediaPath);
+            case MsgFragmentActivity.VIDEO_REQUST:
+                setattachment(MsgFragmentActivity.VIDEO_REQUST, msgFragemnt.mMediaPath);
                 break;
             case -1:
                 setDistroyMediaData();
@@ -329,13 +331,10 @@ public class FullEditFragment extends Fragment implements View.OnClickListener {
                 msgFragemnt.setDistroyMediaData();//  删除主界面的数据
                 break;
             case R.id.fulledit_audio_thumbnail://点击音频缩略图播放音频
-                if (myMediaPlayerContral == null) {
-                    myMediaPlayerContral = new MyMediaPlayerContral();
-                }
-                myMediaPlayerContral.setMediaPlayerView(fulledit_audio_thumbnail, mMediaPath, 0);
+                MyMusicPlayerContral.getInstent(getActivity()).setMediaPlayerView(fulledit_audio_thumbnail, Uri.parse(mMediaPath), 0);
                 break;
             case R.id.fulledit_thumbnail_iv://点击图片或视频
-                if (showType == PHOTO_TYPE) {//图片的缩略图
+                if (showType == MsgFragmentActivity.PHOTO_REQUST) {//图片的缩略图
                     Intent intent4 = new Intent(getActivity(),
                             GalleryActivity.class);
                     ArrayList<String> imagePathList = new ArrayList<>();// 照片路径集合
@@ -344,7 +343,7 @@ public class FullEditFragment extends Fragment implements View.OnClickListener {
                     intent4.putExtra("Type", "mainActivity");
                     intent4.putExtra("compression", compression);
                     getActivity().startActivityForResult(intent4, ((MsgFragmentActivity) getActivity()).PHOTO_REQUST);
-                } else if (showType == VIDEO_TYPE) {//视频的缩略图
+                } else if (showType == MsgFragmentActivity.VIDEO_REQUST) {//视频的缩略图
                     Intent intent5 = new Intent(Intent.ACTION_VIEW);
                     intent5.setDataAndType(Uri.parse(mMediaPath), "video/*");
                     startActivity(intent5);
@@ -359,35 +358,65 @@ public class FullEditFragment extends Fragment implements View.OnClickListener {
      *
      * @param intent
      */
-    public void onNewIntent(Intent intent) {
-        int code = intent.getIntExtra("code", -1);
-        if (code == -1) {
-            return;
-        }
-
-        if (code == PHOTO_TYPE) {//图片(是否统一传地址，截取图片那现在是发送的内存bitmap)
+    public void onNewIntent(Intent intent,int requestCode) {
+        if (requestCode == MsgFragmentActivity.PHOTO_REQUST) {//图片(是否统一传地址，截取图片那现在是发送的内存bitmap)
             ArrayList<String> paths = intent.getStringArrayListExtra("paths");
-            String mEditPhoto = intent.getStringExtra("sendBitmap");
             String pic_path = null;
             compression = intent.getBooleanExtra("compression", false);
             Toast.makeText(getActivity(), "是否发送原图" + compression, Toast.LENGTH_LONG).show();
             if (paths != null && paths.size() > 0)
                 pic_path = paths.get(0);
-            setShowPhotoData(mEditPhoto, pic_path);
+            mEditPhoto = intent.getStringExtra("sendBitmap");
+            setattachment(MsgFragmentActivity.PHOTO_REQUST, pic_path);
             msgFragemnt.mEditPhoto = mEditPhoto;
             msgFragemnt.compression = this.compression;
-            msgFragemnt.setShowPhotoData(pic_path);
-        } else if (code == AUDIO_TYPE) {// 音频
-            MyAudio myAudio = (MyAudio) intent.getSerializableExtra("MyAudio");
-            setShowAudioData(myAudio);
+            msgFragemnt.setattachment(MsgFragmentActivity.PHOTO_REQUST, pic_path);
+        } else if (requestCode == MsgFragmentActivity.AUDIO_REQUST) {// 音频
+            myAudio = (MyAudio) intent.getSerializableExtra("MyAudio");
+            setattachment(MsgFragmentActivity.AUDIO_REQUST, myAudio.getPath());
             msgFragemnt.myAudio = myAudio;
-            msgFragemnt.setShowAudioData();
-        } else if (code == VIDEO_TYPE) {// 视频
+            msgFragemnt.setattachment(MsgFragmentActivity.AUDIO_REQUST, myAudio.getPath());
+        } else if (requestCode == MsgFragmentActivity.VIDEO_REQUST) {// 视频
+            String video_path = null;
             ArrayList<String> paths = intent.getStringArrayListExtra("paths");
-            String path = paths.get(0);
-            setShowVideoData(path);
-            msgFragemnt.mMediaPath = path;
-            msgFragemnt.setShowVideoData(path);
+            if (paths != null && paths.size() > 0)
+                video_path = paths.get(0);
+            setattachment(MsgFragmentActivity.VIDEO_REQUST, video_path);
+            msgFragemnt.mMediaPath = video_path;
+            msgFragemnt.setattachment(MsgFragmentActivity.VIDEO_REQUST, video_path);
+        }
+    }
+
+
+    /**
+     * 多媒体附件统一设置显示
+     *
+     * @param typecoe
+     * @param path
+     */
+    public void setattachment(int typecoe, String path) {
+        showType = typecoe;
+        mMediaPath = path;
+
+        if (typecoe == MsgFragmentActivity.PHOTO_REQUST) {
+            int type = MsgFragmentActivity.PHOTO_REQUST;
+            if (mEditPhoto != null) {//是否是截取图片-本地的没有删除
+                mMediaPath = mEditPhoto;
+                type = MsgFragmentActivity.PHOTO_TYPE_CUT;
+            }
+            setMediaDataShow(mMediaPath, type);
+        } else if (typecoe == MsgFragmentActivity.AUDIO_REQUST) {
+            File file = new File(path);
+            String title = file.getName();
+            fulledit_mediashow_ly.setVisibility(View.VISIBLE);
+            fulledit_title_tv.setText(title);
+            fulledit_audio_thumbnail.setTag(myAudio.getAlbumid());
+            fulledit_audio_thumbnail.initMediaData(myAudio.getAlbumid(), myAudio.getId());
+            fulledit_audio_thumbnail.setVisibility(View.VISIBLE);
+            fulledit_thumbnail_iv.setVisibility(View.GONE);
+
+        } else if (typecoe == MsgFragmentActivity.VIDEO_REQUST) {
+            setMediaDataShow(mMediaPath, MsgFragmentActivity.VIDEO_REQUST);
         }
     }
 
@@ -397,15 +426,18 @@ public class FullEditFragment extends Fragment implements View.OnClickListener {
      * @param path
      * @param code
      */
-    private void setMediaDataShow(String editphoto, String path, int code) {
+    private void setMediaDataShow(String path, int code) {
 
         fulledit_audio_thumbnail.setVisibility(View.GONE);
         fulledit_thumbnail_iv.setVisibility(View.VISIBLE);
+        if (path.startsWith("file://")) {
+            path = Uri.parse(path).getPath();
+        }
         File file = new File(path);
         String title = file.getName();
         fulledit_mediashow_ly.setVisibility(View.VISIBLE);
         fulledit_title_tv.setText(title);
-        ((MsgFragmentActivity) getActivity()).glidePhoto(code, editphoto, file, fulledit_thumbnail_iv);
+        ((MsgFragmentActivity) getActivity()).glidePhoto(code, mEditPhoto, file, fulledit_thumbnail_iv);
     }
 
 
@@ -418,9 +450,9 @@ public class FullEditFragment extends Fragment implements View.OnClickListener {
         fulledit_title_tv.setText("");
         mMediaPath = null;
         showType = -1;
-        if (myMediaPlayerContral != null) {
-            myMediaPlayerContral.stopPlay();
-        }
+        mEditPhoto = null;
+        myAudio = null;
+        MyMusicPlayerContral.getInstent(getActivity()).stopPlay();
     }
 
     public void hidMenuly() {
@@ -436,50 +468,50 @@ public class FullEditFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /**
-     * 显示选择的图片数据
-     *
-     * @param editphoto
-     * @param pic_path
-     */
-    private void setShowPhotoData(String editphoto, String pic_path) {
-        showType = PHOTO_TYPE;
-        mMediaPath = pic_path;
-        if (editphoto != null) {//是否是截取图片--直接传递bitmap对象的
-            setMediaDataShow(editphoto, pic_path, PHOTO_TYPE_CUT);
-        } else {//正常图片地址--传递的是地址
-            setMediaDataShow(editphoto, pic_path, PHOTO_TYPE);
-        }
+//    /**
+//     * 显示选择的图片数据
+//     *
+//     * @param editphoto
+//     * @param pic_path
+//     */
+//    private void setShowPhotoData(String editphoto, String pic_path) {
+//        showType = MsgFragmentActivity.PHOTO_REQUST;
+//        mMediaPath = pic_path;
+//        if (editphoto != null) {//是否是截取图片--直接传递bitmap对象的
+//            setMediaDataShow( pic_path, MsgFragmentActivity.PHOTO_TYPE_CUT);
+//        } else {//正常图片地址--传递的是地址
+//            setMediaDataShow( pic_path, MsgFragmentActivity.PHOTO_REQUST);
+//        }
+//
+//    }
 
-    }
-
-    /**
-     * 显示选中的音频数据
-     *
-     * @param myAudio
-     */
-    private void setShowAudioData(MyAudio myAudio) {
-        showType = AUDIO_TYPE;
-        mMediaPath = myAudio.getPath();
-        setMediaDataShow(null, mMediaPath, AUDIO_TYPE);
-        //如果这里不需要封面的话就不要下面这一段
-        fulledit_audio_thumbnail.initMediaData(myAudio.getAlbumid(), myAudio.getId());
-        fulledit_audio_thumbnail.setVisibility(View.VISIBLE);
-        fulledit_thumbnail_iv.setVisibility(View.GONE);
-
-    }
-
-    /**
-     * 显示的视频数据
-     *
-     * @param path
-     */
-    private void setShowVideoData(String path) {
-        showType = VIDEO_TYPE;
-        mMediaPath = path;
-        setMediaDataShow(null, path, VIDEO_TYPE);
-
-    }
+//    /**
+//     * 显示选中的音频数据
+//     *
+//     * @param myAudio
+//     */
+//    private void setShowAudioData(MyAudio myAudio) {
+//        showType = MsgFragmentActivity.AUDIO_REQUST;
+//        mMediaPath = myAudio.getPath();
+//        setMediaDataShow(null, mMediaPath, MsgFragmentActivity.AUDIO_REQUST);
+//        //如果这里不需要封面的话就不要下面这一段
+//        fulledit_audio_thumbnail.initMediaData(myAudio.getAlbumid(), myAudio.getId());
+//        fulledit_audio_thumbnail.setVisibility(View.VISIBLE);
+//        fulledit_thumbnail_iv.setVisibility(View.GONE);
+//
+//    }
+//
+//    /**
+//     * 显示的视频数据
+//     *
+//     * @param path
+//     */
+//    private void setShowVideoData(String path) {
+//        showType = MsgFragmentActivity.VIDEO_REQUST;
+//        mMediaPath = path;
+//        setMediaDataShow(null, path, MsgFragmentActivity.VIDEO_REQUST);
+//
+//    }
 
 
     /**
@@ -535,13 +567,9 @@ public class FullEditFragment extends Fragment implements View.OnClickListener {
     }
 
 
-
-
     @Override
     public void onPause() {
         super.onPause();
-        if (myMediaPlayerContral != null) {
-            myMediaPlayerContral.stopPlay();
-        }
+        MyMusicPlayerContral.getInstent(getActivity()).stopPlay();
     }
 }
