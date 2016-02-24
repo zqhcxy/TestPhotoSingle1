@@ -81,37 +81,22 @@ public class MyMediaPlayerView extends RelativeLayout {
         audio_playing.setLayoutParams(parents1);
     }
 
-//    public void initMediaData(long albumId, int audioId, long position) {
-//
-//        this.albumId = albumId;
-//        this.audioId = audioId;
-////        this.aduioPath = aduioPath;
-//        loadPic();
-//        if (MyMusicPlayerContral.getInstent().isPlaying(position)) {
-//            circleImageView.startAnimation(mAnim);
-//        }
-//    }
-
     public void initMediaData(long albumId, int audioId) {
 
         this.albumId = albumId;
         this.audioId = audioId;
-//        this.aduioPath = aduioPath;
         loadPic();
         long position = Long.parseLong(this.getTag() + "");
         if (MyMusicPlayerContral.getInstent(context).isPlaying(position)) {
             initAnim();
-            if (circleImageView.getAnimation() == null ) {
+            if (circleImageView.getAnimation() == null) {
                 circleImageView.startAnimation(mAnim);
             }
-//            if (mAnim.hasStarted())
-//                circleImageView.startAnimation(mAnim);
-        }  else{
+        } else {
             circleImageView.clearAnimation();
         }
 
     }
-
 
     private void loadPic() {
         Uri uri;
@@ -138,7 +123,6 @@ public class MyMediaPlayerView extends RelativeLayout {
         }).override(120, 120).placeholder(R.drawable.ic_audio_bg).crossFade().into(circleImageView);
 
     }
-
 
     public void setPlaysate(boolean isplay) {
         if (isplay) {
@@ -169,36 +153,6 @@ public class MyMediaPlayerView extends RelativeLayout {
             mAnim.setFillAfter(false);
         }
     }
-
-    private void initAnim1() {
-        if (mAnim == null) {
-            mAnim = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f,
-                    Animation.RELATIVE_TO_SELF, 0.5f);
-            LinearInterpolator lin = new LinearInterpolator();
-            mAnim.setInterpolator(lin);//设置动画不停顿
-            mAnim.setRepeatCount(-1);
-            mAnim.setDuration(2000);
-            mAnim.setFillAfter(false);
-        }
-
-    }
-
-
-    public void setPlayingIcon(long posotion) {
-        if (MyMusicPlayerContral.getInstent(context).isPlaying(posotion)) {
-            audio_playing.setImageResource(R.drawable.ic_audio_stop);
-            MyMusicPlayerContral.getInstent(context).setLastMyMediaPlayerView(this);
-        }else{
-            audio_playing.setImageResource(R.drawable.ic_audio_play);
-        }
-
-    }
-
-//    public void setDowloadIcon(long posotion) {
-//        if (!MyMusicPlayerContral.getInstent().isPlaying(posotion))
-//            audio_playing.setImageResource(R.drawable.ic_media_download);
-//
-//    }
 
     /**
      * 播放时的UI

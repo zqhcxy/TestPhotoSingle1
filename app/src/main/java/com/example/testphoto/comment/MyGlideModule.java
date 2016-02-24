@@ -20,13 +20,7 @@ public class MyGlideModule implements GlideModule {
         builder.setDiskCache(new DiskCache.Factory() {
             @Override
             public DiskCache build() {
-                // Careful: the external cache directory doesn't enforce
-                // permissions
-                // File cacheLocation = new File(context.getExternalCacheDir(),
-                // "cache_dir_name");
-                // cacheLocation.mkdirs();
                 DiskCache dlw = DiskLruCacheWrapper.get(new File(CommonUtil.getGlideCacheFile()), 250 * 1024 * 1024);
-
                 return dlw;
             }
         });

@@ -58,7 +58,13 @@ public class PhotoWallAdapter extends CursorAdapter {
     @Override
     public int getCount() {
         Cursor cursor = getCursor();
-        return cursor.getCount() + syslist.size();
+        if (cursor != null) {
+            return cursor.getCount() + syslist.size();
+        } else {
+            return syslist.size();
+        }
+
+
     }
 
     @Override
@@ -194,11 +200,13 @@ public class PhotoWallAdapter extends CursorAdapter {
             // // notifyDataSetChanged();
             // }
             // });
-
 //            loader.loadImage(4, filePath, holder.imageView);
 
-            Glide.with(context).load(Uri.parse(filePath)).asBitmap()
-                    .placeholder(R.drawable.empty_photo).centerCrop()
+            Glide.with(context)
+                    .load(Uri.parse(filePath))
+                    .asBitmap()
+                    .placeholder(R.drawable.empty_photo)
+                    .centerCrop()
                     .override(180, 180)
                     .into(holder.imageView);
         }
@@ -257,8 +265,12 @@ public class PhotoWallAdapter extends CursorAdapter {
         //        private ImageView sys_media_iv;//显示系统相机的图标
         private TextView sys_media_tv;//系统相机的标题
     }
+
     private String getDataOfCursor(int position) {
         Cursor cursor = getCursor();
+        if (cursor == null) {
+            return null;
+        }
         cursor.moveToPosition(position);
         String filepath = cursor.getString(0);
         return "file://" + filepath;

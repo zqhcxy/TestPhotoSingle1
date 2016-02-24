@@ -85,14 +85,6 @@ public class ShowAllPhotoFragment extends Fragment implements OnClickListener,
         choicepic_ly = (LinearLayout) view.findViewById(R.id.choicepic_ly);
         local_gv = (GridView) view.findViewById(R.id.local_gv);
         original_title = (TextView) view.findViewById(R.id.original_title);
-//		SpannableString msp = new SpannableString(original_title.getText()
-//				.toString());
-//		//字体颜色
-//		msp.setSpan(new ForegroundColorSpan(Color.CYAN), 3, 7,
-//				Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // 设置前景色为洋红色
-//		// 设置下划线
-//		msp.setSpan(new UnderlineSpan(), 3, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//		original_title.setText(msp);
         //超链接颜色
         String result = getResources().getString(
                 R.string.photo_original) + "(<u>"
@@ -430,11 +422,15 @@ public class ShowAllPhotoFragment extends Fragment implements OnClickListener,
         }
 
         ContentResolver mContentResolver = getActivity().getContentResolver();
-        // 只查询jpg和png的图片,按最新修改排序
-        cursor = mContentResolver.query(mImageUri,
-                new String[]{key_DATA, key_ID}, selection,
-                new String[]{"image/jpg", "image/jpeg", "image/png", "image/gif", "image/vnd.wap.wbmp"},
-                MediaStore.Images.Media.DATE_MODIFIED + " desc");
+        try {
+            // 只查询jpg和png的图片,按最新修改排序
+            cursor = mContentResolver.query(mImageUri,
+                    new String[]{key_DATA, key_ID}, selection,
+                    new String[]{"image/jpg", "image/jpeg", "image/png", "image/gif", "image/vnd.wap.wbmp"},
+                    MediaStore.Images.Media.DATE_MODIFIED + " desc");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return cursor;
     }
 
